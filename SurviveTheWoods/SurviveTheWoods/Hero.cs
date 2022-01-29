@@ -9,10 +9,10 @@ namespace SurviveTheWoods
 {
     public enum Direction
     {
-        Down,
-        Left,
-        Right,
-        Up
+        Down = 0,
+        Left = 1,
+        Right = 2,
+        Up = 3
     }
 
     public class Hero
@@ -23,7 +23,7 @@ namespace SurviveTheWoods
 
         private double animationTimer;
 
-        private short animationFrame = 1;
+        private short animationFrame;
 
         public Direction Direction;
 
@@ -38,6 +38,10 @@ namespace SurviveTheWoods
             texture = content.Load<Texture2D>("Male 01-2");
         }
 
+        /// <summary>
+        /// Updates the hero sprite to walk in a pattern
+        /// </summary>
+        /// <param name="gameTime">the game time</param>
         public void Update(GameTime gameTime)
         {
             // Update the direction timer
@@ -64,24 +68,29 @@ namespace SurviveTheWoods
                 directionTimer -= 2.0;
             }
 
-            // Move the bat in the direction it is flying
+            // Move the hero in the direction it is walking
             switch (Direction)
             {
                 case Direction.Up:
-                    Position += new Vector2(0, -1) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Position += new Vector2(0, -1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case Direction.Down:
-                    Position += new Vector2(0, 1) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Position += new Vector2(0, 1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case Direction.Left:
-                    Position += new Vector2(-1, 0) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Position += new Vector2(-1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case Direction.Right:
-                    Position += new Vector2(1, 0) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Position += new Vector2(1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     break;
             }
         }
 
+        /// <summary>
+        /// Draws the animated hero sprite
+        /// </summary>
+        /// <param name="gameTime">the game time</param>
+        /// <param name="spriteBatch">the sprite batch to draw with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             // Update animation timer
@@ -91,7 +100,7 @@ namespace SurviveTheWoods
             if (animationTimer > 0.3)
             {
                 animationFrame++;
-                if (animationFrame > 3) animationFrame = 1;
+                if (animationFrame > 3) animationFrame = 0;
                 animationTimer -= 0.3;
             }
 
