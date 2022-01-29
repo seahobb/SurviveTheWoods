@@ -9,10 +9,19 @@ namespace SurviveTheWoods
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private Grass grass;
+        private BaseChip baseChip;
+        private Hero hero;
+        private Tree[] trees;
+        private Log[] logs;
+        private ExitGameButton exit;
         private SpriteFont font;
+        private SpriteFont arialFont;
 
-
+        private InputManager inputManager;
+        
+        /// <summary>
+        /// A survival game
+        /// </summary>
         public STWGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -20,44 +29,93 @@ namespace SurviveTheWoods
             IsMouseVisible = true;
         }
 
+        /// <summary>
+        /// Initializes the game
+        /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            grass = new Grass();
+            baseChip = new BaseChip();
+
+            hero = new Hero();
+
+            System.Random rand = new System.Random();
+
+            trees = new Tree[75];
+            for (int i = 0; i < 75; i++)
+            {
+                trees[i] = new Tree(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+            }
+
+            logs = new Log[20];
+            for (int i = 0; i < 20; i++)
+            {
+                logs[i] = new Log(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+            }
+
+            exit = new ExitGameButton();
+
+            inputManager = new InputManager();
+
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads content for the game
+        /// </summary>
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            grass.LoadContent(Content);
+            
+            baseChip.LoadContent(Content);
+            hero.LoadContent(Content);
+            foreach (var tree in trees) tree.LoadContent(Content);
+            foreach (var log in logs) log.LoadContent(Content);
+            exit.LoadContent(Content);
             font = Content.Load<SpriteFont>("nightFont");
+            arialFont = Content.Load<SpriteFont>("Arial");
         }
 
+        /// <summary>
+        /// Updates the game world
+        /// </summary>
+        /// <param name="gameTime">the game time</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            hero.Update(gameTime);
 
+            inputManager.Update(gameTime);
+
+            if (inputManager.ExitButtonPressed) Exit();
             // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Draws the game world
+        /// </summary>
+        /// <param name="gameTime">the game time</param>
         protected override void Draw(GameTime gameTime)
         {
             Color green = new Color(107, 158, 0);
             GraphicsDevice.Clear(green);
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            // float x = (float)GraphicsDevice.Viewport.Width / 2;
-            //float y = (float)GraphicsDevice.Viewport.Height / 2;
-            grass.Draw(gameTime, _spriteBatch);
+
+            baseChip.Draw(gameTime, _spriteBatch);
+            hero.Draw(gameTime, _spriteBatch);
+            foreach (var tree in trees) tree.Draw(gameTime, _spriteBatch);
+            foreach(var log in logs) log.Draw(gameTime, _spriteBatch);
+            exit.Draw(gameTime, _spriteBatch);
             _spriteBatch.DrawString(font, "Survive the \nWoods!", new Vector2(220, 50), Color.SeaShell);
+            //game doesn't actually start yet
+            _spriteBatch.DrawString(arialFont, "Press 'space' to start", new Vector2(310, 420), Color.SeaShell);
+            _spriteBatch.DrawString(arialFont, "Exit", new Vector2(735, 405), Color.SeaShell);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
