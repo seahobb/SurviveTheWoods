@@ -1,4 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿// Adapted from the MonoGame port of the original XNA GameStateExample 
+// https://github.com/tomizechsterson/game-state-management-monogame
+
+using SurviveTheWoods;
+using SurviveTheWoods.Screens;
+using SurviveTheWoods.StateManagement;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -7,16 +13,12 @@ namespace SurviveTheWoods
     public class STWGame : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        //private SpriteBatch _spriteBatch;
+        private readonly ScreenManager _screenManager;
 
-        private BaseChip baseChip;
-        private Hero hero;
-        private Tree[] trees;
-        private AutumnTree[] autumnTrees;
-        private Log[] logs;
-        private ExitGameButton exit;
-        private SpriteFont font;
-        private SpriteFont arialFont;
+        //private ExitGameButton exit;
+        // private SpriteFont font;
+        // private SpriteFont arialFont;
 
         private InputManager inputManager;
         
@@ -28,6 +30,20 @@ namespace SurviveTheWoods
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            var screenFactory = new ScreenFactory();
+            Services.AddService(typeof(IScreenFactory), screenFactory);
+
+            _screenManager = new ScreenManager(this);
+            Components.Add(_screenManager);
+
+            AddInitialScreens();
+        }
+
+        private void AddInitialScreens()
+        {
+            _screenManager.AddScreen(new BackgroundScreen(), null);
+            _screenManager.AddScreen(new MainMenuScreen(), null);
         }
 
         /// <summary>
@@ -36,33 +52,9 @@ namespace SurviveTheWoods
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            baseChip = new BaseChip();
+           
 
-            hero = new Hero() { Position = new Vector2(400, 200), Direction = Direction.Down};
-
-            System.Random rand = new System.Random();
-
-            trees = new Tree[50];
-            for (int i = 0; i < 50; i++)
-            {
-                trees[i] = new Tree(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
-            }
-
-            autumnTrees = new AutumnTree[20];
-            for (int i = 0; i < 20; i++)
-            {
-                autumnTrees[i] = new AutumnTree(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
-            }
-
-            logs = new Log[20];
-            for (int i = 0; i < 20; i++)
-            {
-                logs[i] = new Log(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
-            }
-
-            exit = new ExitGameButton();
-
-            inputManager = new InputManager();
+            //useful for other classes: inputManager = new InputManager();
 
             base.Initialize();
         }
@@ -72,18 +64,9 @@ namespace SurviveTheWoods
         /// </summary>
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+           // _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            
-            baseChip.LoadContent(Content);
-            foreach (var log in logs) log.LoadContent(Content);
-            hero.LoadContent(Content);
-            foreach (var tree in trees) tree.LoadContent(Content);
-            foreach (var tree in autumnTrees) tree.LoadContent(Content);
-            exit.LoadContent(Content);
-            font = Content.Load<SpriteFont>("nightFont");
-            arialFont = Content.Load<SpriteFont>("Arial");
         }
 
         /// <summary>
@@ -92,11 +75,12 @@ namespace SurviveTheWoods
         /// <param name="gameTime">the game time</param>
         protected override void Update(GameTime gameTime)
         {
-            hero.Update(gameTime);
+            //hero.Update(gameTime);
 
-            inputManager.Update(gameTime);
+            //useful for other classes: inputManager.Update(gameTime);
 
-            if (inputManager.ExitButtonPressed) Exit();
+            //if (inputManager.ExitButtonPressed) Exit();
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -110,24 +94,31 @@ namespace SurviveTheWoods
         {
             Color green = new Color(107, 158, 0);
             GraphicsDevice.Clear(green);
+            base.Draw(gameTime);    // The real drawing happens inside the ScreenManager component
+
+            /////////////////////////////////
+
+            
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
+            //_spriteBatch.Begin();
 
-            baseChip.Draw(gameTime, _spriteBatch);
-            foreach (var log in logs) log.Draw(gameTime, _spriteBatch);
+           // baseChip.Draw(gameTime, _spriteBatch);
+            /*foreach (var log in logs) log.Draw(gameTime, _spriteBatch);
             hero.Draw(gameTime, _spriteBatch);
             foreach (var tree in trees) tree.Draw(gameTime, _spriteBatch);
-            foreach (var tree in autumnTrees) tree.Draw(gameTime, _spriteBatch);
-            exit.Draw(gameTime, _spriteBatch);
-            _spriteBatch.DrawString(font, "Survive the \nWoods!", new Vector2(220, 50), Color.SeaShell);
+            foreach (var tree in autumnTrees) tree.Draw(gameTime, _spriteBatch);*/
+            //exit.Draw(gameTime, _spriteBatch);
+            //_spriteBatch.DrawString(font, "Survive the \nWoods!", new Vector2(220, 50), Color.SeaShell);
             //game doesn't actually start yet
-            _spriteBatch.DrawString(arialFont, "Press 'space' to start", new Vector2(310, 420), Color.SeaShell);
-            _spriteBatch.DrawString(arialFont, "Exit", new Vector2(735, 405), Color.SeaShell);
+            //_spriteBatch.DrawString(arialFont, "Press 'space' to start", new Vector2(310, 420), Color.SeaShell);
+            //_spriteBatch.DrawString(arialFont, "Exit", new Vector2(735, 405), Color.SeaShell);
 
-            _spriteBatch.End();
+           // _spriteBatch.End();
 
-            base.Draw(gameTime);
+            //base.Draw(gameTime);
         }
+
+       
     }
 }

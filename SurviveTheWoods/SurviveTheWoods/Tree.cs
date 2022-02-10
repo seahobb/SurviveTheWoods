@@ -9,7 +9,8 @@ namespace SurviveTheWoods
 {
     public class Tree
     {
-        private Texture2D texture;
+       // private Texture2D texture;
+        public Texture2D Texture { get; set; }
 
         private Vector2 position;
 
@@ -27,10 +28,10 @@ namespace SurviveTheWoods
         /// Loads the tree sprite
         /// </summary>
         /// <param name="content">the tree sprite</param>
-        public void LoadContent(ContentManager content)
+      /*  public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("[Base]BaseChip_pipo16");
-        }
+        }*/
 
         /// <summary>
         /// Draws the tree sprite
@@ -39,7 +40,7 @@ namespace SurviveTheWoods
         /// <param name="spriteBatch">the sprite batch to render with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, new Rectangle(32, 16, 32, 32), Color.White);
+            spriteBatch.Draw(Texture, position, new Rectangle(32, 16, 32, 32), Color.White);
         }
     }
 }

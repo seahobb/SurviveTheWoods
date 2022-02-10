@@ -9,16 +9,17 @@ namespace SurviveTheWoods
 {
     public class BaseChip
     {
-        private Texture2D texture;
+        //private Texture2D texture;
+        public Texture2D Texture { get; set; }
 
         /// <summary>
         /// Loads the atlas texture
         /// </summary>
         /// <param name="content">the atlas texture</param>
-        public void LoadContent(ContentManager content)
+       /* public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("[Base]BaseChip_pipo16");
-        }
+        }*/
 
         /// <summary>
         /// Draws certain parts of the atlas texture 
@@ -31,7 +32,7 @@ namespace SurviveTheWoods
             {
                 for (int j = 0; j < 30; j++)
                 {
-                    spriteBatch.Draw(texture, new Vector2(i*16, j*16), new Rectangle(0, 0, 16, 16), Color.White);
+                    spriteBatch.Draw(Texture, new Vector2(i*16, j*16), new Rectangle(0, 0, 16, 16), Color.White);
                 }
             }
         }

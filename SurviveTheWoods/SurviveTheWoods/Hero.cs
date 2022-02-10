@@ -17,7 +17,8 @@ namespace SurviveTheWoods
 
     public class Hero
     {
-        private Texture2D texture;
+        //private Texture2D texture;
+        public Texture2D Texture { get; set; }
 
         private double directionTimer;
 
@@ -33,10 +34,10 @@ namespace SurviveTheWoods
         /// Loads the hero sprite
         /// </summary>
         /// <param name="content">the hero sprite</param>
-        public void LoadContent(ContentManager content)
+        /*public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>("Male 01-2");
-        }
+        }*/
 
         /// <summary>
         /// Updates the hero sprite to walk in a pattern
@@ -97,16 +98,16 @@ namespace SurviveTheWoods
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
             // Update animation frame
-            if (animationTimer > 0.3)
+            if (animationTimer > 0.15)
             {
                 animationFrame++;
-                if (animationFrame > 3) animationFrame = 0;
-                animationTimer -= 0.3;
+                if (animationFrame > 2) animationFrame = 0;
+                animationTimer -= 0.15;
             }
 
             // Draw the sprite
             var source = new Rectangle(animationFrame * 32, (int)Direction * 32, 32, 32);
-            spriteBatch.Draw(texture, Position, source, Color.White);
+            spriteBatch.Draw(Texture, Position, source, Color.White);
         }
     }
 }
