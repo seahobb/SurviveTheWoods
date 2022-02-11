@@ -18,12 +18,18 @@ namespace SurviveTheWoods.Screens
         private float _selectionFade;    // Entries transition out of the selection effect when they are deselected
         private Vector2 _position;    // This is set by the MenuScreen each frame in Update
 
+        /// <summary>
+        /// Menu entry text
+        /// </summary>
         public string Text
         {
             private get => _text;
             set => _text = value;
         }
-
+        
+        /// <summary>
+        /// Menu entry position
+        /// </summary>
         public Vector2 Position
         {
             get => _position;

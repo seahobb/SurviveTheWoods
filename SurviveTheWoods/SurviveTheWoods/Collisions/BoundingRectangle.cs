@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace SurviveTheWoods.Collisions
 {
@@ -36,9 +33,14 @@ namespace SurviveTheWoods.Collisions
             Height = height;
         }
 
-        public bool CollidesWith(Vector2 mousePosition)
+        public bool CollidesWith(BoundingRectangle other)
         {
-            return CollisionHelper.Collides(this, mousePosition);
+            return CollisionHelper.Collides(this, other);
         }
+
+        /* public bool CollidesWith(Vector2 mousePosition)
+         {
+             return CollisionHelper.Collides(this, mousePosition);
+         }*/
     }
 }

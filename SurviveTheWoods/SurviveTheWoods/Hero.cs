@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
+using SurviveTheWoods.Collisions;
 
 namespace SurviveTheWoods
 {
@@ -17,18 +15,32 @@ namespace SurviveTheWoods
 
     public class Hero
     {
-        //private Texture2D texture;
-        public Texture2D Texture { get; set; }
-
-        private double directionTimer;
-
         private double animationTimer;
 
         private short animationFrame;
 
-        public Direction Direction;
+        private KeyboardState keyboardState;
 
-        public Vector2 Position;
+        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(400 - 16, 200 - 16), 32, 32);
+
+        private Direction Direction = Direction.Down;
+
+        private Vector2 position = new Vector2(400, 200);
+
+        /// <summary>
+        /// Bounds of the sprite
+        /// </summary>
+        public BoundingRectangle Bounds => bounds;
+
+        /// <summary>
+        /// Default color of when sprite might get injured
+        /// </summary>
+        public Color Color { get; set; } = Color.White;
+
+        /// <summary>
+        /// Sprite texture
+        /// </summary>
+        public Texture2D Texture { get; set; }
 
         /// <summary>
         /// Loads the hero sprite
@@ -40,51 +52,39 @@ namespace SurviveTheWoods
         }*/
 
         /// <summary>
-        /// Updates the hero sprite to walk in a pattern
+        /// Updates the hero sprite to walk with user input
         /// </summary>
         /// <param name="gameTime">the game time</param>
         public void Update(GameTime gameTime)
         {
-            // Update the direction timer
-            directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            keyboardState = Keyboard.GetState();
 
-            // Switch directions every 2 seconds
-            if (directionTimer > 2.0)
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
             {
-                switch (Direction)
-                {
-                    case Direction.Up:
-                        Direction = Direction.Right;
-                        break;
-                    case Direction.Down:
-                        Direction = Direction.Left;
-                        break;
-                    case Direction.Right:
-                        Direction = Direction.Down;
-                        break;
-                    case Direction.Left:
-                        Direction = Direction.Up;
-                        break;
-                }
-                directionTimer -= 2.0;
+                position += new Vector2(0, -1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Direction = Direction.Up;
             }
 
-            // Move the hero in the direction it is walking
-            switch (Direction)
+            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
             {
-                case Direction.Up:
-                    Position += new Vector2(0, -1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
-                case Direction.Down:
-                    Position += new Vector2(0, 1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
-                case Direction.Left:
-                    Position += new Vector2(-1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
-                case Direction.Right:
-                    Position += new Vector2(1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
+                position += new Vector2(0, 1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Direction = Direction.Down;
             }
+
+            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+            {
+                position += new Vector2(-1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Direction = Direction.Left;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+            {
+                position += new Vector2(1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Direction = Direction.Right;
+            }
+
+            bounds.X = position.X - 16;
+            bounds.Y = position.Y - 16;
         }
 
         /// <summary>
@@ -97,8 +97,23 @@ namespace SurviveTheWoods
             // Update animation timer
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
+            keyboardState = Keyboard.GetState();
+
+            bool keyDown = false;
+            if (keyboardState.IsKeyDown(Keys.W) ||
+                keyboardState.IsKeyDown(Keys.A) ||
+                keyboardState.IsKeyDown(Keys.S) ||
+                keyboardState.IsKeyDown(Keys.D) ||
+                keyboardState.IsKeyDown(Keys.Left) ||
+                keyboardState.IsKeyDown(Keys.Up) ||
+                keyboardState.IsKeyDown(Keys.Down) ||
+                keyboardState.IsKeyDown(Keys.Right))
+            {
+                keyDown = true;
+            }
+
             // Update animation frame
-            if (animationTimer > 0.15)
+            if (animationTimer > 0.15 && keyDown)
             {
                 animationFrame++;
                 if (animationFrame > 2) animationFrame = 0;
@@ -107,7 +122,7 @@ namespace SurviveTheWoods
 
             // Draw the sprite
             var source = new Rectangle(animationFrame * 32, (int)Direction * 32, 32, 32);
-            spriteBatch.Draw(Texture, Position, source, Color.White);
+            spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
         }
     }
 }

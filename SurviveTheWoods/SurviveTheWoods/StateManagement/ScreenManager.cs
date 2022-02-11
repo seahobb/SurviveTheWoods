@@ -43,12 +43,25 @@ namespace SurviveTheWoods.StateManagement
         /// </summary>
         public Texture2D BlankTexture { get; private set; }
 
+        /// <summary>
+        /// Base chip with all sprites
+        /// </summary>
         public BaseChip BaseChip { get; private set; }
 
         /// <summary>
         /// Represents the hero sprite
         /// </summary>
         public Hero Hero { get; private set; }
+
+        /// <summary>
+        /// Represents the ghost sprite
+        /// </summary>
+        public Ghost Ghost { get; private set; }
+
+        /// <summary>
+        /// Represents the skeleton sprite
+        /// </summary>
+        public Skeleton Skeleton { get; private set; }
 
         /// <summary>
         /// Array of the tree sprite
@@ -91,11 +104,13 @@ namespace SurviveTheWoods.StateManagement
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            TitleFont = _content.Load<SpriteFont>("nightFont");
+            TitleFont = _content.Load<SpriteFont>("nightFont"); 
             MenuFont = _content.Load<SpriteFont>("Arial");
             BaseChip = new BaseChip();
 
-            Hero = new Hero() { Position = new Vector2(400, 200), Direction = Direction.Down };
+            Hero = new Hero();
+            Ghost = new Ghost();
+            Skeleton = new Skeleton();
 
             System.Random rand = new System.Random();
 
@@ -123,6 +138,9 @@ namespace SurviveTheWoods.StateManagement
             BaseChip.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var log in Logs) log.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             Hero.Texture = _content.Load<Texture2D>("Male 01-2");
+            Ghost.Texture = _content.Load<Texture2D>("Enemy 15-1");
+            Skeleton.Texture = _content.Load<Texture2D>("Enemy 04-1");
+            //Hero.LoadContent(_content); - works too now
             foreach (var tree in Trees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in AutumnTrees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
 

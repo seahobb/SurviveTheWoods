@@ -17,41 +17,11 @@ namespace SurviveTheWoods.Screens
     // move up and down to select an entry, or cancel to back out of the screen.
     public abstract class MenuScreen : GameScreen
     {
-        /// <summary>
-        /// Represents the base sprite chip
-        /// </summary>
-       /* public BaseChip BaseChip { get; private set; }
-
-        /// <summary>
-        /// Represents the hero sprite
-        /// </summary>
-        public Hero Hero { get; private set; }
-
-        /// <summary>
-        /// Array of the tree sprite
-        /// </summary>
-        public Tree[] Trees { get; private set; }
-
-        /// <summary>
-        /// Array of the autumn tree sprite
-        /// </summary>
-        public AutumnTree[] AutumnTrees { get; private set; }
-
-        /// <summary>
-        /// Array of the log sprite
-        /// </summary>
-        public Log[] Logs { get; private set; }*/
-
-        //private BaseChip baseChip;
-       //////////////////////////////////// private Hero hero;
-       // private Tree[] trees;
-       // private AutumnTree[] autumnTrees;
-        //private Log[] logs;
 
         private readonly List<MenuEntry> _menuEntries = new List<MenuEntry>();
         private int _selectedEntry;
         private readonly string _menuTitle;
-        private ContentManager _content;
+       // private ContentManager _content;
 
         private readonly InputAction _menuUp;
         private readonly InputAction _menuDown;
@@ -64,8 +34,6 @@ namespace SurviveTheWoods.Screens
         protected MenuScreen(string menuTitle)
         {
             _menuTitle = menuTitle;
-            // LoadSprites();
-            //////////////////hero = ScreenManager.Hero;
 
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -83,51 +51,6 @@ namespace SurviveTheWoods.Screens
                 new[] { Buttons.B, Buttons.Back },
                 new[] { Keys.Back }, true);
         }
-
-      /*  private void LoadSprites()
-        {
-            baseChip = new BaseChip();
-
-            hero = new Hero() { Position = new Vector2(400, 200), Direction = Direction.Down };
-
-            System.Random rand = new System.Random();
-
-            trees = new Tree[50];
-            for (int i = 0; i < 50; i++)
-            {
-                trees[i] = new Tree(new Vector2((float)rand.NextDouble() * ScreenManager.GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * ScreenManager.GraphicsDevice.Viewport.Height));
-            }
-
-            autumnTrees = new AutumnTree[20];
-            for (int i = 0; i < 20; i++)
-            {
-                autumnTrees[i] = new AutumnTree(new Vector2((float)rand.NextDouble() * ScreenManager.GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * ScreenManager.GraphicsDevice.Viewport.Height));
-            }
-
-            logs = new Log[20];
-            for (int i = 0; i < 20; i++)
-            {
-                logs[i] = new Log(new Vector2((float)rand.NextDouble() * ScreenManager.GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * ScreenManager.GraphicsDevice.Viewport.Height));
-            }
-
-            if (_content == null)
-                _content = new ContentManager(ScreenManager.Game.Services, "Content");
-
-            // BaseChip = //do what i do in BaseChip.LoadContent here if below doesn't work
-            baseChip.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
-            //BaseChip.LoadContent(_content);
-            // foreach (var log in Logs) log.LoadContent(_content);
-            foreach (var log in logs) log.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
-            //Hero.LoadContent(_content);
-            hero.Texture = _content.Load<Texture2D>("Male 01-2");
-            //foreach (var tree in Trees) tree.LoadContent(_content);
-            foreach (var tree in trees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
-            //foreach (var tree in AutumnTrees) tree.LoadContent(_content);
-            foreach (var tree in autumnTrees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
-
-            Thread.Sleep(1000);
-            ScreenManager.Game.ResetElapsedTime();
-        }*/
 
         // Responds to user input, changing the selected entry and accepting or cancelling the menu.
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -212,8 +135,6 @@ namespace SurviveTheWoods.Screens
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-           ///////////////////// hero.Update(gameTime);
-
             // Update each nested MenuEntry object.
             for (int i = 0; i < _menuEntries.Count; i++)
             {
@@ -235,13 +156,11 @@ namespace SurviveTheWoods.Screens
             var trees = ScreenManager.Trees;
             var autumnTrees = ScreenManager.AutumnTrees;
             var logs = ScreenManager.Logs;
-            /////////hero = ScreenManager.Hero;
 
             spriteBatch.Begin();
 
             baseChip.Draw(gameTime, spriteBatch);
             foreach (var log in logs) log.Draw(gameTime, spriteBatch);
-            ////////////hero.Draw(gameTime, spriteBatch);
             foreach (var tree in trees) tree.Draw(gameTime, spriteBatch);
             foreach (var tree in autumnTrees) tree.Draw(gameTime, spriteBatch);
 

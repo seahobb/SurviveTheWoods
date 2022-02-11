@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 
 namespace SurviveTheWoods
 {
@@ -21,7 +17,6 @@ namespace SurviveTheWoods
         public Log(Vector2 position)
         {
             this.position = position;
-            //this.bounds = new BoundingRectangle()
         }
 
         /// <summary>

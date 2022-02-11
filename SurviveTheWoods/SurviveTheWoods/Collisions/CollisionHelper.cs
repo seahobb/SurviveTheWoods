@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
-
-namespace SurviveTheWoods.Collisions
+﻿namespace SurviveTheWoods.Collisions
 {
     public static class CollisionHelper
     {
         /// <summary>
-        /// Detects a click within the hard-coded axis points
+        /// Detects a collision between two BoundingRectangles
         /// </summary>
-        /// <param name="exitButton">Button points</param>
-        /// <param name="mousePosition">Mouse cursor points</param>
+        /// <param name="a">The first rectangle</param>
+        /// <param name="b">The second rectangle</param>
         /// <returns>true for collision, false otherwise</returns>
-        public static bool Collides(BoundingRectangle exitButton, Vector2 mousePosition)
+        public static bool Collides(BoundingRectangle a, BoundingRectangle b)
         {
-            if (mousePosition.X >= 1292 && mousePosition.X <= 1336 &&
-                mousePosition.Y >= 719 && mousePosition.Y <= 764) return true;
-            else return false;
+            return !(a.Right < b.Left || a.Left > b.Right ||
+                     a.Top > b.Bottom || a.Bottom < b.Top);
         }
     }
 }

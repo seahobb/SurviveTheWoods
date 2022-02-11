@@ -4,7 +4,6 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using SurviveTheWoods.StateManagement;
 
 namespace SurviveTheWoods.Screens
@@ -15,7 +14,7 @@ namespace SurviveTheWoods.Screens
     public class BackgroundScreen : GameScreen
     {
         private ContentManager _content;
-        private Texture2D _backgroundTexture;
+        //private Texture2D _backgroundTexture;
 
         public BackgroundScreen()
         {

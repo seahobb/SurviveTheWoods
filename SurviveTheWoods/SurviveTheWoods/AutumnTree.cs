@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 
 namespace SurviveTheWoods
 {
     public class AutumnTree
     {
-        //private Texture2D texture;
-        public Texture2D Texture { get; set; }
-
         private Vector2 position;
+
+        /// <summary>
+        /// Texture of the tree
+        /// </summary>
+        public Texture2D Texture { get; set; }
 
         /// <summary>
         /// Sets tree position

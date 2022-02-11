@@ -26,7 +26,7 @@ namespace SurviveTheWoods.Screens
 
         private void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen());//, new CutSceneScreen());
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen());
         }
 
        /* private void OptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)

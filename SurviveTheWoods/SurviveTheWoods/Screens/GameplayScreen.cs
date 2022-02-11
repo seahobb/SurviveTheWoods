@@ -11,13 +11,17 @@ using SurviveTheWoods.StateManagement;
 
 namespace SurviveTheWoods.Screens
 {
-    // This screen implements the actual game logic. It is just a
-    // placeholder to get the idea across: you'll probably want to
-    // put some more interesting gameplay in here!
     public class GameplayScreen : GameScreen
     {
         private ContentManager _content;
         private SpriteFont _gameFont;
+        private BaseChip _baseChip;
+        private Tree[] _trees;
+        private AutumnTree[] _autumnTrees;
+        private Log[] _logs;
+        private Hero _hero;
+        private Ghost _ghost;
+        private Skeleton _skeleton;
 
         private Vector2 _playerPosition = new Vector2(100, 100);
         private Vector2 _enemyPosition = new Vector2(100, 100);
@@ -45,6 +49,14 @@ namespace SurviveTheWoods.Screens
 
             _gameFont = _content.Load<SpriteFont>("Arial");
 
+            _baseChip = ScreenManager.BaseChip;
+            _trees = ScreenManager.Trees;
+            _autumnTrees = ScreenManager.AutumnTrees;
+            _logs = ScreenManager.Logs;
+            _hero = ScreenManager.Hero;
+            _ghost = ScreenManager.Ghost;
+            _skeleton = ScreenManager.Skeleton;
+
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
             // while, giving you a chance to admire the beautiful loading screen.
@@ -71,6 +83,7 @@ namespace SurviveTheWoods.Screens
         // stop updating when the pause menu is active, or if you tab away to a different application.
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+
             base.Update(gameTime, otherScreenHasFocus, false);
 
             // Gradually fade in or out depending on whether we are covered by the pause screen.
@@ -78,6 +91,18 @@ namespace SurviveTheWoods.Screens
                 _pauseAlpha = Math.Min(_pauseAlpha + 1f / 32, 1);
             else
                 _pauseAlpha = Math.Max(_pauseAlpha - 1f / 32, 0);
+
+            _ghost.Update(gameTime);
+            _skeleton.Update(gameTime);
+
+            _hero.Color = Color.White;
+            _hero.Update(gameTime);
+
+            if (_ghost.Bounds.CollidesWith(_hero.Bounds) || _skeleton.Bounds.CollidesWith(_hero.Bounds))
+            {
+                _hero.Color = Color.Red;
+            }
+
 
             if (IsActive)
             {
@@ -161,9 +186,19 @@ namespace SurviveTheWoods.Screens
 
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(_gameFont, "// TODO", _playerPosition, Color.Green);
+            _baseChip.Draw(gameTime, spriteBatch);
+            foreach (var log in _logs) log.Draw(gameTime, spriteBatch);
+            _hero.Draw(gameTime, spriteBatch);
+
+            _ghost.Draw(gameTime, spriteBatch);
+            _skeleton.Draw(gameTime, spriteBatch);
+
+            foreach (var tree in _trees) tree.Draw(gameTime, spriteBatch);
+            foreach (var tree in _autumnTrees) tree.Draw(gameTime, spriteBatch);
+
+            /*spriteBatch.DrawString(_gameFont, "// TODO", _playerPosition, Color.Green);
             spriteBatch.DrawString(_gameFont, "Insert Gameplay Here",
-                                   _enemyPosition, Color.DarkRed);
+                                   _enemyPosition, Color.DarkRed);*/
 
             spriteBatch.End();
 
