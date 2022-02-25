@@ -56,6 +56,18 @@
 /processorParam:TextureFormat=Color
 /build:Enemy 15-1.png
 
+#begin Hit_Hurt56.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Hit_Hurt56.wav
+
+#begin Lobo Loco - Spective (ID 1260).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Lobo Loco - Spective (ID 1260).mp3
+
 #begin Male 01-2.png
 /importer:TextureImporter
 /processor:TextureProcessor

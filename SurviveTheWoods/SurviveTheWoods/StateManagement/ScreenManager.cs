@@ -3,8 +3,10 @@
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace SurviveTheWoods.StateManagement
 {
@@ -22,6 +24,16 @@ namespace SurviveTheWoods.StateManagement
         private readonly InputState _input = new InputState();
 
         private bool _isInitialized;
+
+        /// <summary>
+        /// Sound played when player is hurt
+        /// </summary>
+        public SoundEffect HurtSound { get; set; }
+
+        /// <summary>
+        /// Song played in background
+        /// </summary>
+        public Song BackgroundMusic { get; set; }
 
         /// <summary>
         /// A SpriteBatch shared by all GameScreens
@@ -143,7 +155,10 @@ namespace SurviveTheWoods.StateManagement
             //Hero.LoadContent(_content); - works too now
             foreach (var tree in Trees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in AutumnTrees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
-
+            HurtSound = _content.Load<SoundEffect>("Hit_Hurt56");
+            BackgroundMusic = _content.Load<Song>("Lobo Loco - Spective (ID 1260)");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(BackgroundMusic);
 
             // Tell each of the screens to load their content 
             foreach (var screen in _screens)

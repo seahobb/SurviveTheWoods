@@ -27,6 +27,7 @@ namespace SurviveTheWoods.Screens
         private Vector2 _enemyPosition = new Vector2(100, 100);
 
         private readonly Random _random = new Random();
+        private double directionTimer;
 
         private float _pauseAlpha;
         private readonly InputAction _pauseAction;
@@ -79,6 +80,7 @@ namespace SurviveTheWoods.Screens
             _content.Unload();
         }
 
+
         // This method checks the GameScreen.IsActive property, so the game will
         // stop updating when the pause menu is active, or if you tab away to a different application.
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -98,9 +100,17 @@ namespace SurviveTheWoods.Screens
             _hero.Color = Color.White;
             _hero.Update(gameTime);
 
+            directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+
             if (_ghost.Bounds.CollidesWith(_hero.Bounds) || _skeleton.Bounds.CollidesWith(_hero.Bounds))
             {
-                _hero.Color = Color.Red;
+                if (directionTimer > 1.0)
+                {
+                    _hero.Color = Color.Red;
+                    ScreenManager.HurtSound.Play();
+                    directionTimer -= 1.0;
+                }
             }
 
 
