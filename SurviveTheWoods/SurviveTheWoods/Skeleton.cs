@@ -10,13 +10,27 @@ namespace SurviveTheWoods
 
         private short animationFrame;
 
-        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - 16, 300 - 16), 32, 32);
+        // private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - 16, 300 - 16), 32, 32);
+        private BoundingRectangle bounds;
 
         private Direction Direction = Direction.Down;
 
-        private Vector2 position = new Vector2(200, 300);
+        //private Vector2 position = new Vector2(200, 300);
+        private Vector2 position;
 
         private double directionTimer;
+
+        private int x;
+
+        private int y;
+
+        public Skeleton(ref System.Random r)
+        {
+            x = r.Next(200, 1128);
+            y = r.Next(200, 1128);
+            bounds = new BoundingRectangle(new Vector2(x - 16, y - 16), 32, 32);
+            position = new Vector2(x, y);
+        }
 
         /// <summary>
         /// Bounds of the skeleton

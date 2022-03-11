@@ -15,13 +15,20 @@ namespace SurviveTheWoods.Screens
     {
         private ContentManager _content;
         private SpriteFont _gameFont;
+        private EndFog _endFog;
         private BaseChip _baseChip;
         private Tree[] _trees;
         private AutumnTree[] _autumnTrees;
         private Log[] _logs;
         private Hero _hero;
-        private Ghost _ghost;
-        private Skeleton _skeleton;
+        private Ghost _ghost1;
+        private Ghost _ghost2;
+        private Ghost _ghost3;
+        private Ghost _ghost4;
+        private Skeleton _skeleton1;
+        private Skeleton _skeleton2;
+        private Skeleton _skeleton3;
+        private Skeleton _skeleton4;
 
         private Vector2 _playerPosition = new Vector2(100, 100);
         private Vector2 _enemyPosition = new Vector2(100, 100);
@@ -50,13 +57,20 @@ namespace SurviveTheWoods.Screens
 
             _gameFont = _content.Load<SpriteFont>("Arial");
 
+            _endFog = ScreenManager.EndFog;
             _baseChip = ScreenManager.BaseChip;
             _trees = ScreenManager.Trees;
             _autumnTrees = ScreenManager.AutumnTrees;
             _logs = ScreenManager.Logs;
             _hero = ScreenManager.Hero;
-            _ghost = ScreenManager.Ghost;
-            _skeleton = ScreenManager.Skeleton;
+            _ghost1 = ScreenManager.Ghost1;
+            _ghost2 = ScreenManager.Ghost2;
+            _ghost3 = ScreenManager.Ghost3;
+            _ghost4 = ScreenManager.Ghost4;
+            _skeleton1 = ScreenManager.Skeleton1;
+            _skeleton2 = ScreenManager.Skeleton2;
+            _skeleton3 = ScreenManager.Skeleton3;
+            _skeleton4 = ScreenManager.Skeleton4;
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -94,8 +108,15 @@ namespace SurviveTheWoods.Screens
             else
                 _pauseAlpha = Math.Max(_pauseAlpha - 1f / 32, 0);
 
-            _ghost.Update(gameTime);
-            _skeleton.Update(gameTime);
+            _ghost1.Update(gameTime);
+            _ghost2.Update(gameTime);
+            _ghost3.Update(gameTime);
+            _ghost4.Update(gameTime);
+
+            _skeleton1.Update(gameTime);
+            _skeleton2.Update(gameTime);
+            _skeleton3.Update(gameTime);
+            _skeleton4.Update(gameTime);
 
             _hero.Color = Color.White;
             _hero.Update(gameTime);
@@ -103,7 +124,10 @@ namespace SurviveTheWoods.Screens
             directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
 
-            if (_ghost.Bounds.CollidesWith(_hero.Bounds) || _skeleton.Bounds.CollidesWith(_hero.Bounds))
+            if (_ghost1.Bounds.CollidesWith(_hero.Bounds) || _skeleton1.Bounds.CollidesWith(_hero.Bounds)
+                || _ghost2.Bounds.CollidesWith(_hero.Bounds) || _skeleton2.Bounds.CollidesWith(_hero.Bounds)
+                || _ghost3.Bounds.CollidesWith(_hero.Bounds) || _skeleton3.Bounds.CollidesWith(_hero.Bounds)
+                || _ghost4.Bounds.CollidesWith(_hero.Bounds) || _skeleton4.Bounds.CollidesWith(_hero.Bounds)) 
             {
                 if (directionTimer > 1.0)
                 {
@@ -189,28 +213,45 @@ namespace SurviveTheWoods.Screens
         public override void Draw(GameTime gameTime)
         {
             // This game has a blue background. Why? Because!
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.CornflowerBlue, 0, 0);
+            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.DarkOliveGreen, 0, 0);
 
             // Our player and enemy are both actually just text strings.
             var spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
 
+            float offsetX = 435 - _hero.Position.X;
+            float offsetY = 280 - _hero.Position.Y;
+        
+            Matrix transform = Matrix.CreateTranslation(offsetX, offsetY, 0); 
+
+            spriteBatch.Begin(transformMatrix: transform);
+            
             _baseChip.Draw(gameTime, spriteBatch);
             foreach (var log in _logs) log.Draw(gameTime, spriteBatch);
             _hero.Draw(gameTime, spriteBatch);
 
-            _ghost.Draw(gameTime, spriteBatch);
-            _skeleton.Draw(gameTime, spriteBatch);
+            _ghost1.Draw(gameTime, spriteBatch);
+            _ghost2.Draw(gameTime, spriteBatch);
+            _ghost3.Draw(gameTime, spriteBatch);
+            _ghost4.Draw(gameTime, spriteBatch);
+            
+            _skeleton1.Draw(gameTime, spriteBatch);
+            _skeleton2.Draw(gameTime, spriteBatch);
+            _skeleton3.Draw(gameTime, spriteBatch);
+            _skeleton4.Draw(gameTime, spriteBatch);
 
             foreach (var tree in _trees) tree.Draw(gameTime, spriteBatch);
             foreach (var tree in _autumnTrees) tree.Draw(gameTime, spriteBatch);
+            _endFog.Draw(gameTime, spriteBatch);
 
-            /*spriteBatch.DrawString(_gameFont, "// TODO", _playerPosition, Color.Green);
-            spriteBatch.DrawString(_gameFont, "Insert Gameplay Here",
-                                   _enemyPosition, Color.DarkRed);*/
+            //spriteBatch.DrawString(_gameFont, "// TODO", _playerPosition, Color.Green);
+            //spriteBatch.DrawString(_gameFont, "Insert Gameplay Here",
+            //                      _enemyPosition, Color.DarkRed);
 
             spriteBatch.End();
+
+
+
 
             // If the game is transitioning on or off, fade it out to black.
             /*if (TransitionPosition > 0 || _pauseAlpha > 0)

@@ -25,7 +25,13 @@ namespace SurviveTheWoods
 
         private Direction Direction = Direction.Down;
 
-        private Vector2 position = new Vector2(400, 200);
+        private Vector2 position = new Vector2(640, 640);
+
+        public Vector2 Position 
+        {
+            get { return position; }
+            private set { }
+        }
 
         /// <summary>
         /// Bounds of the sprite

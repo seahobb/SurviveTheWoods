@@ -56,6 +56,11 @@ namespace SurviveTheWoods.StateManagement
         public Texture2D BlankTexture { get; private set; }
 
         /// <summary>
+        /// Represents the fog sprite background
+        /// </summary>
+        public EndFog EndFog { get; private set; }
+
+        /// <summary>
         /// Base chip with all sprites
         /// </summary>
         public BaseChip BaseChip { get; private set; }
@@ -68,12 +73,42 @@ namespace SurviveTheWoods.StateManagement
         /// <summary>
         /// Represents the ghost sprite
         /// </summary>
-        public Ghost Ghost { get; private set; }
+        public Ghost Ghost1 { get; private set; }
+
+        /// <summary>
+        /// Represents the ghost sprite
+        /// </summary>
+        public Ghost Ghost2 { get; private set; }
+
+        /// <summary>
+        /// Represents the ghost sprite
+        /// </summary>
+        public Ghost Ghost3 { get; private set; }
+
+        /// <summary>
+        /// Represents the ghost sprite
+        /// </summary>
+        public Ghost Ghost4 { get; private set; }
 
         /// <summary>
         /// Represents the skeleton sprite
         /// </summary>
-        public Skeleton Skeleton { get; private set; }
+        public Skeleton Skeleton1 { get; private set; }
+
+        /// <summary>
+        /// Represents the skeleton sprite
+        /// </summary>
+        public Skeleton Skeleton2 { get; private set; }
+
+        /// <summary>
+        /// Represents the skeleton sprite
+        /// </summary>
+        public Skeleton Skeleton3 { get; private set; }
+
+        /// <summary>
+        /// Represents the skeleton sprite
+        /// </summary>
+        public Skeleton Skeleton4 { get; private set; }
 
         /// <summary>
         /// Array of the tree sprite
@@ -118,40 +153,61 @@ namespace SurviveTheWoods.StateManagement
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             TitleFont = _content.Load<SpriteFont>("nightFont"); 
             MenuFont = _content.Load<SpriteFont>("Arial");
-            BaseChip = new BaseChip();
 
+            EndFog = new EndFog();
+            BaseChip = new BaseChip();
             Hero = new Hero();
-            Ghost = new Ghost();
-            Skeleton = new Skeleton();
+            System.Random r = new System.Random();
+            Ghost1 = new Ghost(ref r);
+            Ghost2 = new Ghost(ref r);
+            Ghost3 = new Ghost(ref r);
+            Ghost4 = new Ghost(ref r);
+            Skeleton1 = new Skeleton(ref r);
+            Skeleton2 = new Skeleton(ref r);
+            Skeleton3 = new Skeleton(ref r);
+            Skeleton4 = new Skeleton(ref r);
+
+            
 
             System.Random rand = new System.Random();
 
-            Trees = new Tree[50];
-            for (int i = 0; i < 50; i++)
+            Trees = new Tree[100];
+            for (int i = 0; i < 100; i++)
             {
-                Trees[i] = new Tree(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+                //Trees[i] = new Tree(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+                Trees[i] = new Tree(new Vector2((float)rand.NextDouble() * 1280, (float)rand.NextDouble() * 1280));
             }
 
-            AutumnTrees = new AutumnTree[20];
-            for (int i = 0; i < 20; i++)
+            AutumnTrees = new AutumnTree[70];
+            for (int i = 0; i < 70; i++)
             {
-                AutumnTrees[i] = new AutumnTree(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+               // AutumnTrees[i] = new AutumnTree(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+                AutumnTrees[i] = new AutumnTree(new Vector2((float)rand.NextDouble() * 1280, (float)rand.NextDouble() * 1280));
             }
+            //default: 800, 480 GraphicsDevice.Viewport.Width, height
 
-            Logs = new Log[20];
-            for (int i = 0; i < 20; i++)
+            Logs = new Log[10];
+            for (int i = 0; i < 10; i++)
             {
-                Logs[i] = new Log(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+                //Logs[i] = new Log(new Vector2((float)rand.NextDouble() * GraphicsDevice.Viewport.Width, (float)rand.NextDouble() * GraphicsDevice.Viewport.Height));
+                Logs[i] = new Log(new Vector2((float)rand.NextDouble() * 1280, (float)rand.NextDouble() * 1280));
             }
             // BlankTexture = _content.Load<Texture2D>("blank");
 
             //////////////////////////////////////
 
+            EndFog.Texture = _content.Load<Texture2D>("fog1");
             BaseChip.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var log in Logs) log.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             Hero.Texture = _content.Load<Texture2D>("Male 01-2");
-            Ghost.Texture = _content.Load<Texture2D>("Enemy 15-1");
-            Skeleton.Texture = _content.Load<Texture2D>("Enemy 04-1");
+            Ghost1.Texture = _content.Load<Texture2D>("Enemy 15-1");
+            Ghost2.Texture = _content.Load<Texture2D>("Enemy 15-1");
+            Ghost3.Texture = _content.Load<Texture2D>("Enemy 15-1");
+            Ghost4.Texture = _content.Load<Texture2D>("Enemy 15-1");
+            Skeleton1.Texture = _content.Load<Texture2D>("Enemy 04-1");
+            Skeleton2.Texture = _content.Load<Texture2D>("Enemy 04-1");
+            Skeleton3.Texture = _content.Load<Texture2D>("Enemy 04-1");
+            Skeleton4.Texture = _content.Load<Texture2D>("Enemy 04-1");
             //Hero.LoadContent(_content); - works too now
             foreach (var tree in Trees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in AutumnTrees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");

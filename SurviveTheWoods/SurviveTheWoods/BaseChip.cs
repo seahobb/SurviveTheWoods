@@ -7,7 +7,7 @@ namespace SurviveTheWoods
     {
         //private Texture2D texture;
         public Texture2D Texture { get; set; }
-
+        
         /// <summary>
         /// Loads the atlas texture
         /// </summary>
@@ -24,11 +24,14 @@ namespace SurviveTheWoods
         /// <param name="spriteBatch">the sprite batch to render with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < 50; i++)
+            //80*16 = 1280x1280
+            for (int i = 0; i < 83; i++) //50
             {
-                for (int j = 0; j < 30; j++)
+                for (int j = 0; j < 83; j++) //30 
                 {
+                    //800 width, 480 height. draw as many grass as to cover this area
                     spriteBatch.Draw(Texture, new Vector2(i*16, j*16), new Rectangle(0, 0, 16, 16), Color.White);
+                    
                 }
             }
         }

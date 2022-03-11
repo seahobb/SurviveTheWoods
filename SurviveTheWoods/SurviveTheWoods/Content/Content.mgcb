@@ -56,6 +56,18 @@
 /processorParam:TextureFormat=Color
 /build:Enemy 15-1.png
 
+#begin fog1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:fog1.png
+
 #begin Hit_Hurt56.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
