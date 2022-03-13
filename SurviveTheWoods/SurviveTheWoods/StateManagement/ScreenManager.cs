@@ -25,6 +25,8 @@ namespace SurviveTheWoods.StateManagement
 
         private bool _isInitialized;
 
+      //  private OceanParticleSystem oceans;
+
         /// <summary>
         /// Sound played when player is hurt
         /// </summary>
@@ -110,10 +112,17 @@ namespace SurviveTheWoods.StateManagement
         /// </summary>
         public Skeleton Skeleton4 { get; private set; }
 
+       /* public Heart Heart1 { get; private set; }
+        public Heart Heart2 { get; private set; }
+        public Heart Heart3 { get; private set; }
+        public Heart Heart4 { get; private set; }
+        public Heart Heart5 { get; private set; }*/
+
         /// <summary>
         /// Array of the tree sprite
         /// </summary>
         public Tree[] Trees { get; private set; }
+
 
         /// <summary>
         /// Array of the autumn tree sprite
@@ -125,6 +134,7 @@ namespace SurviveTheWoods.StateManagement
         /// </summary>
         public Log[] Logs { get; private set; }
 
+       // Game game;
 
 
         /// <summary>
@@ -134,6 +144,7 @@ namespace SurviveTheWoods.StateManagement
         public ScreenManager(Game game) : base(game)
         {
             _content = new ContentManager(game.Services, "Content");
+           // this.game = game; //see if this works///////////////////////////////////////////////
         }
 
         /// <summary>
@@ -143,6 +154,9 @@ namespace SurviveTheWoods.StateManagement
         {
             base.Initialize();
             _isInitialized = true;
+
+            //oceans = new OceanParticleSystem(game, 20);
+            //game.Components.Add(oceans);
         }
 
         /// <summary>
@@ -166,10 +180,15 @@ namespace SurviveTheWoods.StateManagement
             Skeleton2 = new Skeleton(ref r);
             Skeleton3 = new Skeleton(ref r);
             Skeleton4 = new Skeleton(ref r);
-
+            /*Heart1 = new Heart(Hero.Position);
+            Heart2 = new Heart(Hero.Position);
+            Heart3 = new Heart(Hero.Position);
+            Heart4 = new Heart(Hero.Position);
+            Heart5 = new Heart(Hero.Position);*/
             
 
             System.Random rand = new System.Random();
+
 
             Trees = new Tree[100];
             for (int i = 0; i < 100; i++)
@@ -196,7 +215,7 @@ namespace SurviveTheWoods.StateManagement
 
             //////////////////////////////////////
 
-            EndFog.Texture = _content.Load<Texture2D>("fog1");
+            //EndFog.Texture = _content.Load<Texture2D>("fog1");
             BaseChip.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var log in Logs) log.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             Hero.Texture = _content.Load<Texture2D>("Male 01-2");
@@ -208,6 +227,12 @@ namespace SurviveTheWoods.StateManagement
             Skeleton2.Texture = _content.Load<Texture2D>("Enemy 04-1");
             Skeleton3.Texture = _content.Load<Texture2D>("Enemy 04-1");
             Skeleton4.Texture = _content.Load<Texture2D>("Enemy 04-1");
+           /* Heart1.Texture = _content.Load<Texture2D>("heart");
+            Heart2.Texture = _content.Load<Texture2D>("heart");
+            Heart3.Texture = _content.Load<Texture2D>("heart");
+            Heart4.Texture = _content.Load<Texture2D>("heart");
+            Heart5.Texture = _content.Load<Texture2D>("heart");*/
+
             //Hero.LoadContent(_content); - works too now
             foreach (var tree in Trees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in AutumnTrees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
@@ -240,6 +265,7 @@ namespace SurviveTheWoods.StateManagement
         /// <param name="gameTime">An object representing time in the game</param>
         public override void Update(GameTime gameTime)
         {
+            //oceans.PlaceOcean(new Vector2(0, 0));
             // Read in the keyboard and gamepad
             _input.Update();
 

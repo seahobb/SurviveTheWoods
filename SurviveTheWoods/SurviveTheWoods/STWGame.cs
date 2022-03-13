@@ -17,7 +17,16 @@ namespace SurviveTheWoods
         private readonly ScreenManager _screenManager;
 
         //private InputManager inputManager;
-        
+        private static System.Random random = new System.Random();
+
+        public System.Random Random => random;
+
+        //https://github.com/CartBlanche/MonoGame-Samples/blob/7deb685071fb1e356d46b89328e142e7d991cb27/ParticleSample/ParticleSampleGame.cs#L304
+        public static float RandomBetween(float min, float max)
+        {
+            return min + (float)random.NextDouble() * (max - min);
+        }
+
         /// <summary>
         /// A survival game
         /// </summary>
@@ -36,12 +45,14 @@ namespace SurviveTheWoods
             Components.Add(_screenManager);
 
             AddInitialScreens();
+
+            //mainmenu->gameplayscreen (send this to gameplayscreen)
         }
 
         private void AddInitialScreens()
         {
             _screenManager.AddScreen(new BackgroundScreen(), null);
-            _screenManager.AddScreen(new MainMenuScreen(), null);
+            _screenManager.AddScreen(new MainMenuScreen(this), null);
         }
 
         /// <summary>
@@ -50,11 +61,11 @@ namespace SurviveTheWoods
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-           
+
 
             //useful for other classes: inputManager = new InputManager();
-
             base.Initialize();
+            
         }
 
         /// <summary>
@@ -74,7 +85,6 @@ namespace SurviveTheWoods
             //useful for other classes: inputManager.Update(gameTime);
 
             // TODO: Add your update logic here
-
             base.Update(gameTime);
         }
 

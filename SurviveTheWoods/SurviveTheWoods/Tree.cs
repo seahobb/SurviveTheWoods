@@ -23,6 +23,15 @@ namespace SurviveTheWoods
         }
 
         /// <summary>
+        /// Position of the tree
+        /// </summary>
+        public Vector2 Position
+        {
+            get => position;
+            set => position = value;
+        }
+
+        /// <summary>
         /// Loads the tree sprite
         /// </summary>
         /// <param name="content">the tree sprite</param>

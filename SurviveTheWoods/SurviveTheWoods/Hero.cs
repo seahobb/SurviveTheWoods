@@ -27,6 +27,10 @@ namespace SurviveTheWoods
 
         private Vector2 position = new Vector2(640, 640);
 
+        public bool InjuredSprite { get; set; }
+
+        public bool DeadSprite { get; set; }
+
         public Vector2 Position 
         {
             get { return position; }
@@ -65,29 +69,60 @@ namespace SurviveTheWoods
         {
             keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+            if (InjuredSprite)
             {
-                position += new Vector2(0, -1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Direction = Direction.Up;
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+                {
+                    position += new Vector2(0, -1) * 55 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Up;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+                {
+                    position += new Vector2(0, 1) * 55 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Down;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+                {
+                    position += new Vector2(-1, 0) * 55 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Left;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+                {
+                    position += new Vector2(1, 0) * 55 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Right;
+                }
+            }
+            else if (!InjuredSprite && !DeadSprite)
+            {
+                if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+                {
+                    position += new Vector2(0, -1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Up;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+                {
+                    position += new Vector2(0, 1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Down;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+                {
+                    position += new Vector2(-1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Left;
+                }
+
+                if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+                {
+                    position += new Vector2(1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    Direction = Direction.Right;
+                }
             }
 
-            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
-            {
-                position += new Vector2(0, 1) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Direction = Direction.Down;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
-            {
-                position += new Vector2(-1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Direction = Direction.Left;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
-            {
-                position += new Vector2(1, 0) * 75 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Direction = Direction.Right;
-            }
+            
 
             bounds.X = position.X - 16;
             bounds.Y = position.Y - 16;
@@ -128,7 +163,12 @@ namespace SurviveTheWoods
 
             // Draw the sprite
             var source = new Rectangle(animationFrame * 32, (int)Direction * 32, 32, 32);
-            spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
+            if (InjuredSprite)
+                spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
+            else if (!InjuredSprite)
+                spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
+            else if (DeadSprite)
+                spriteBatch.Draw(Texture, position, source, Color.Black, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
         }
     }
 }

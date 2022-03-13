@@ -50,6 +50,8 @@ namespace SurviveTheWoods
             set => position = value;
         }
 
+        public bool Dead { get; set; } = false;
+
         /// <summary>
         /// Default color of when sprite might get injured
         /// </summary>
@@ -66,50 +68,54 @@ namespace SurviveTheWoods
         /// <param name="gameTime">the game time</param>
         public void Update(GameTime gameTime)
         {
-            // Update the direction timer
-            directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-           // Random rand = new Random();
-
-            if (directionTimer > 5.0)
+            if (!Dead)
             {
-                switch (Direction)//rand.Next(0, 3))
+                // Update the direction timer
+                directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+                // Random rand = new Random();
+
+                if (directionTimer > 5.0)
                 {
-                    case Direction.Right:
-                        Direction = Direction.Down;
-                        break;
+                    switch (Direction)//rand.Next(0, 3))
+                    {
+                        case Direction.Right:
+                            Direction = Direction.Down;
+                            break;
+                        case Direction.Up:
+                            Direction = Direction.Right;
+                            break;
+                        case Direction.Down:
+                            Direction = Direction.Left;
+                            break;
+                        case Direction.Left:
+                            Direction = Direction.Up;
+                            break;
+                    }
+                    directionTimer -= 5.0;
+                }
+
+                // Move the ghost in the direction it is walking
+                switch (Direction)
+                {
                     case Direction.Up:
-                        Direction = Direction.Right;
+                        position += new Vector2(0, -1) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                         break;
                     case Direction.Down:
-                        Direction = Direction.Left;
+                        position += new Vector2(0, 1) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                         break;
                     case Direction.Left:
-                        Direction = Direction.Up;
+                        position += new Vector2(-1, 0) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        break;
+                    case Direction.Right:
+                        position += new Vector2(1, 0) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                         break;
                 }
-                directionTimer -= 5.0;
-            }
 
-            // Move the ghost in the direction it is walking
-            switch (Direction)
-            {
-                case Direction.Up:
-                    position += new Vector2(0, -1) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
-                case Direction.Down:
-                    position += new Vector2(0, 1) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
-                case Direction.Left:
-                    position += new Vector2(-1, 0) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
-                case Direction.Right:
-                    position += new Vector2(1, 0) * 20 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    break;
+                bounds.X = position.X - 16;
+                bounds.Y = position.Y - 16;
             }
-
-            bounds.X = position.X - 16;
-            bounds.Y = position.Y - 16;
+            
         }
 
         /// <summary>
@@ -119,20 +125,31 @@ namespace SurviveTheWoods
         /// <param name="spriteBatch">the sprite batch to draw with</param>
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            // Update animation timer
-            animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            // Update animation frame
-            if (animationTimer > 0.25)
+            if (!Dead)
             {
-                animationFrame++;
-                if (animationFrame > 2) animationFrame = 0;
-                animationTimer -= 0.25;
+                // Update animation timer
+                animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+                // Update animation frame
+                if (animationTimer > 0.25)
+                {
+                    animationFrame++;
+                    if (animationFrame > 2) animationFrame = 0;
+                    animationTimer -= 0.25;
+                }
+
+                // Draw the sprite
+                var source = new Rectangle(animationFrame * 32, (int)Direction * 32, 32, 32);
+                spriteBatch.Draw(Texture, position, source, Color * 0.5f, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                //float rotate = (float)MathHelper.Pi / 2;
+
+                var source = new Rectangle(animationFrame * 32, (int)Direction * 32, 32, 32);
+                spriteBatch.Draw(Texture, position, source, Color * 0.5f, 90, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
             }
 
-            // Draw the sprite
-            var source = new Rectangle(animationFrame * 32, (int)Direction * 32, 32, 32);
-            spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
 
         }
     }

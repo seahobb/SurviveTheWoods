@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SurviveTheWoods.StateManagement;
+using SurviveTheWoods.ParticleSystem;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SurviveTheWoods.Screens
 {
@@ -29,6 +32,20 @@ namespace SurviveTheWoods.Screens
         private Skeleton _skeleton2;
         private Skeleton _skeleton3;
         private Skeleton _skeleton4;
+       /* private Heart _heart1;
+        private Heart _heart2;
+        private Heart _heart3;
+        private Heart _heart4;
+        private Heart _heart5;*/
+
+        private Ghost[] ghostArr = new Ghost[4];
+        private Skeleton[] skeletonArr = new Skeleton[4];
+        private int[] skeletonHealth = new int[4];
+        private int[] ghostHealth = new int[4];
+
+        BloodParticleSystem _blood;
+
+        //private Game _game;
 
         private Vector2 _playerPosition = new Vector2(100, 100);
         private Vector2 _enemyPosition = new Vector2(100, 100);
@@ -39,14 +56,23 @@ namespace SurviveTheWoods.Screens
         private float _pauseAlpha;
         private readonly InputAction _pauseAction;
 
-        public GameplayScreen()
+
+        private short hurtCount = 0;
+
+        //private OceanParticleSystem oceans;
+        private STWGame passgame;
+        public GameplayScreen(STWGame passgame)
         {
+            this.passgame = passgame;
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             _pauseAction = new InputAction(
                 new[] { Buttons.Start, Buttons.Back },
                 new[] { Keys.Back }, true);
+
+            _blood = new BloodParticleSystem(passgame, 20);
+            passgame.Components.Add(_blood);
         }
 
         // Load graphics content for the game
@@ -56,6 +82,7 @@ namespace SurviveTheWoods.Screens
                 _content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             _gameFont = _content.Load<SpriteFont>("Arial");
+
 
             _endFog = ScreenManager.EndFog;
             _baseChip = ScreenManager.BaseChip;
@@ -71,6 +98,39 @@ namespace SurviveTheWoods.Screens
             _skeleton2 = ScreenManager.Skeleton2;
             _skeleton3 = ScreenManager.Skeleton3;
             _skeleton4 = ScreenManager.Skeleton4;
+
+            ghostArr[0] = _ghost1;
+            ghostArr[1] = _ghost2;
+            ghostArr[2] = _ghost3;
+            ghostArr[3] = _ghost4;
+
+            skeletonArr[0] = _skeleton1;
+            skeletonArr[1] = _skeleton2;
+            skeletonArr[2] = _skeleton3;
+            skeletonArr[3] = _skeleton4;
+
+            for (int i = 0; i < 3; i++)
+            {
+                skeletonHealth[i] = 3;
+                ghostHealth[i] = 3;
+            }
+
+            /* _heart1 = ScreenManager.Heart1;
+             _heart2 = ScreenManager.Heart2;
+             _heart3 = ScreenManager.Heart3;
+             _heart4 = ScreenManager.Heart4;
+             _heart5 = ScreenManager.Heart5;*/
+
+           /* health[0] = (_heart1);
+            health[1] = (_heart2);
+            health[2] = (_heart3);
+            health[3] = (_heart4);
+            health[4] = (_heart5);*/
+
+
+            //oceans = new OceanParticleSystem(ScreenManager.Game, 20);
+            //_game = ScreenManager.Game;
+            //_game.Components.Add(oceans);
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -95,10 +155,34 @@ namespace SurviveTheWoods.Screens
         }
 
 
+
+        private Heart[] health = new Heart[5];
+        private KeyboardState keyboardState;
+        
+
         // This method checks the GameScreen.IsActive property, so the game will
         // stop updating when the pause menu is active, or if you tab away to a different application.
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            Vector2 changingPos = new Vector2(0, 0);
+            //changingPos.X -= 150; //-=640
+            //changingPos.Y -= 150;
+            /*if (_hero.Position.X > 300)
+            {
+                changingPos.X += 300;
+                oceans.PlaceOcean(changingPos);
+            }
+                
+            if (_hero.Position.Y > 300)
+            {
+                changingPos.Y += 300;
+                oceans.PlaceOcean(changingPos);
+            }*/
+
+            //then try to subtract amount that matrix transform does
+
+
+            
 
             base.Update(gameTime, otherScreenHasFocus, false);
 
@@ -108,37 +192,99 @@ namespace SurviveTheWoods.Screens
             else
                 _pauseAlpha = Math.Max(_pauseAlpha - 1f / 32, 0);
 
-            _ghost1.Update(gameTime);
-            _ghost2.Update(gameTime);
-            _ghost3.Update(gameTime);
-            _ghost4.Update(gameTime);
+            ghostArr[0].Update(gameTime);
+            ghostArr[1].Update(gameTime);
+            ghostArr[2].Update(gameTime);
+            ghostArr[3].Update(gameTime);
 
-            _skeleton1.Update(gameTime);
-            _skeleton2.Update(gameTime);
-            _skeleton3.Update(gameTime);
-            _skeleton4.Update(gameTime);
+            skeletonArr[0].Update(gameTime);
+            skeletonArr[1].Update(gameTime);
+            skeletonArr[2].Update(gameTime);
+            skeletonArr[3].Update(gameTime);
+
+           /* _heart1.Update(gameTime);
+            _heart2.Update(gameTime);
+            _heart3.Update(gameTime);
+            _heart4.Update(gameTime);
+            _heart5.Update(gameTime);*/
 
             _hero.Color = Color.White;
             _hero.Update(gameTime);
 
             directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
-
-            if (_ghost1.Bounds.CollidesWith(_hero.Bounds) || _skeleton1.Bounds.CollidesWith(_hero.Bounds)
-                || _ghost2.Bounds.CollidesWith(_hero.Bounds) || _skeleton2.Bounds.CollidesWith(_hero.Bounds)
-                || _ghost3.Bounds.CollidesWith(_hero.Bounds) || _skeleton3.Bounds.CollidesWith(_hero.Bounds)
-                || _ghost4.Bounds.CollidesWith(_hero.Bounds) || _skeleton4.Bounds.CollidesWith(_hero.Bounds)) 
+            for (int i = 0; i < 4; i++)
             {
-                if (directionTimer > 1.0)
+                
+                if ((ghostArr[i].Bounds.CollidesWith(_hero.Bounds) && !ghostArr[i].Dead) ||
+                        (skeletonArr[i].Bounds.CollidesWith(_hero.Bounds) && !skeletonArr[i].Dead))
                 {
-                    _hero.Color = Color.Red;
-                    ScreenManager.HurtSound.Play();
-                    directionTimer -= 1.0;
+                    if (directionTimer > 0.5)
+                    {
+                        _hero.Color = Color.Red;
+                        ScreenManager.HurtSound.Play();
+                        hurtCount++;
+                        //health[hurtCount-1].Color = Color.Black;
+
+                        if (hurtCount == 8)
+                        {
+                            _hero.InjuredSprite = true;
+                        }
+                        if (hurtCount >= 10)
+                        {
+                            _blood.PlaceBlood(new Vector2(380, 250));
+                            //_hero.DeadSprite = true;
+                            _hero.InjuredSprite = false;
+                            hurtCount = 0;
+                        }
+
+                        directionTimer -= 0.5;
+                    }
+
+
+                    // Detect hero hitting monster
+                    keyboardState = Keyboard.GetState();
+
+                    if (keyboardState.IsKeyDown(Keys.Space))
+                    {
+                        if (ghostArr[i].Bounds.CollidesWith(_hero.Bounds))
+                        {
+                            //check if dead
+                            if (ghostHealth[i] == 0)
+                            {
+                                ghostArr[i].Color = Color.Black;
+                                ghostArr[i].Dead = true;
+                            }
+                            else
+                            {
+                                ghostHealth[i]--;
+                                ghostArr[i].Color = Color.Red;
+                                ScreenManager.HurtSound.Play();
+                            }
+                        }
+                        else if (skeletonArr[i].Bounds.CollidesWith(_hero.Bounds))
+                        {
+                            //check if dead
+                            if (skeletonHealth[i] == 0)
+                            {
+                                skeletonArr[i].Color = Color.Black;
+                                skeletonArr[i].Dead = true;
+                            }
+                            else
+                            {
+                                skeletonHealth[i]--;
+                                skeletonArr[i].Color = Color.Red;
+                                ScreenManager.HurtSound.Play();
+                            }
+                        }
+                    }
                 }
+                    
+                
             }
 
-
-            if (IsActive)
+            
+                if (IsActive)
             {
                 // Apply some random jitter to make the enemy move around.
                 const float randomization = 10;
@@ -212,7 +358,6 @@ namespace SurviveTheWoods.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            // This game has a blue background. Why? Because!
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.DarkOliveGreen, 0, 0);
 
             // Our player and enemy are both actually just text strings.
@@ -225,24 +370,31 @@ namespace SurviveTheWoods.Screens
             Matrix transform = Matrix.CreateTranslation(offsetX, offsetY, 0); 
 
             spriteBatch.Begin(transformMatrix: transform);
-            
+
             _baseChip.Draw(gameTime, spriteBatch);
             foreach (var log in _logs) log.Draw(gameTime, spriteBatch);
             _hero.Draw(gameTime, spriteBatch);
 
-            _ghost1.Draw(gameTime, spriteBatch);
-            _ghost2.Draw(gameTime, spriteBatch);
-            _ghost3.Draw(gameTime, spriteBatch);
-            _ghost4.Draw(gameTime, spriteBatch);
-            
-            _skeleton1.Draw(gameTime, spriteBatch);
-            _skeleton2.Draw(gameTime, spriteBatch);
-            _skeleton3.Draw(gameTime, spriteBatch);
-            _skeleton4.Draw(gameTime, spriteBatch);
+            /*ghostArr[0].Draw(gameTime, spriteBatch);
+            ghostArr[1].Draw(gameTime, spriteBatch);
+            ghostArr[2].Draw(gameTime, spriteBatch);
+            ghostArr[3].Draw(gameTime, spriteBatch);*/
+
+            skeletonArr[0].Draw(gameTime, spriteBatch);
+            skeletonArr[1].Draw(gameTime, spriteBatch);
+            skeletonArr[2].Draw(gameTime, spriteBatch);
+            skeletonArr[3].Draw(gameTime, spriteBatch);
+
+            /*_heart1.Draw(gameTime, spriteBatch, 1);
+            _heart2.Draw(gameTime, spriteBatch, 2);
+            _heart3.Draw(gameTime, spriteBatch, 3);
+            _heart4.Draw(gameTime, spriteBatch, 4);
+            _heart5.Draw(gameTime, spriteBatch, 5);*/
 
             foreach (var tree in _trees) tree.Draw(gameTime, spriteBatch);
+
             foreach (var tree in _autumnTrees) tree.Draw(gameTime, spriteBatch);
-            _endFog.Draw(gameTime, spriteBatch);
+            //_endFog.Draw(gameTime, spriteBatch);
 
             //spriteBatch.DrawString(_gameFont, "// TODO", _playerPosition, Color.Green);
             //spriteBatch.DrawString(_gameFont, "Insert Gameplay Here",
@@ -250,6 +402,33 @@ namespace SurviveTheWoods.Screens
 
             spriteBatch.End();
 
+            //BlendState bs = new BlendState();
+            //bs.AlphaSourceBlend = Blend.SourceAlpha;
+           // bs.AlphaDestinationBlend = Blend.One;
+           // bs.AlphaDestinationBlend = Blend.One;
+            //bs.AlphaBlendFunction = Color.White * (float)bs / (float)byte.MaxValue;
+
+
+            spriteBatch.Begin(transformMatrix: transform, blendState: BlendState.AlphaBlend);
+            
+            ghostArr[0].Draw(gameTime, spriteBatch);
+            ghostArr[1].Draw(gameTime, spriteBatch);
+            ghostArr[2].Draw(gameTime, spriteBatch);
+            ghostArr[3].Draw(gameTime, spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin();
+            var origin = new Vector2(199, 99);
+            var font = ScreenManager.MenuFont;
+            var color = Color.SeaShell * TransitionAlpha;
+
+            int health = 10 - hurtCount;
+            string s = "          Health: " + health;
+            spriteBatch.DrawString(font, s,
+                new Vector2(580, 630), color, 0, origin,
+                2.0f, SpriteEffects.None, 0);
+
+            spriteBatch.End();
 
 
 

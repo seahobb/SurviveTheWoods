@@ -9,8 +9,10 @@ namespace SurviveTheWoods.Screens
     // The main menu screen is the first thing displayed when the game starts up.
     public class MainMenuScreen : MenuScreen
     {
-        public MainMenuScreen() : base("Survive the \nWoods!")
+        private STWGame passgame;
+        public MainMenuScreen(STWGame passgame) : base("Survive the \nWoods!")
         {
+            this.passgame = passgame;
             var playGameMenuEntry = new MenuEntry("Press 'Enter' to Start");
             //var optionsMenuEntry = new MenuEntry("Options");
             var exitMenuEntry = new MenuEntry("Exit");
@@ -26,7 +28,7 @@ namespace SurviveTheWoods.Screens
 
         private void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen());
+            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex, new GameplayScreen(passgame));
         }
 
        /* private void OptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
