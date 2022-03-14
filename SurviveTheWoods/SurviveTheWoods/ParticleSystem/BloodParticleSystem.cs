@@ -17,7 +17,7 @@ namespace SurviveTheWoods.ParticleSystem
             minNumParticles = 20;
             maxNumParticles = 25;
 
-            blendState = BlendState.Additive;
+            //blendState = BlendState.Additive;
             DrawOrder = AdditiveBlendDrawOrder;
         }
 
@@ -40,12 +40,12 @@ namespace SurviveTheWoods.ParticleSystem
         {
             base.UpdateParticle(ref particle, dt);
 
-            //float normalizeLifetime = particle.TimeSinceStart / particle.Lifetime;
+            float normalizeLifetime = particle.TimeSinceStart / particle.Lifetime;
 
-            //float alpha = 4 * normalizeLifetime * (1 - normalizeLifetime);
-           // particle.Color = Color.White * alpha;
+            float alpha = 4 * normalizeLifetime * (1 - normalizeLifetime);
+            particle.Color = Color.White * alpha;
 
-            particle.Scale = 0.1f + 0.25f; //* normalizeLifetime;
+            particle.Scale = 0.1f + 0.25f * normalizeLifetime;
         }
 
         public void PlaceBlood(Vector2 where) => AddParticles(where);

@@ -3,3 +3,5 @@ Pipoya RPG Tileset by Pipoya, released for commercial or personal use, accessed 
 Pipoya RPG Character Sprites, released for commercial or personal use, accessed from https://pipoya.itch.io/pipoya-free-rpg-character-sprites-32x32
 Hit_Hurt56.wav - created by Ethan Wheeler with BXFR, released under public domain
 Lobo Loco - Spective (ID 1260).mp3 - created by Lobo Loco (https://freemusicarchive.org/music/Lobo_Loco/next-wildwestworld/spective-id-1260) released under Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) license
+blood.png - created by Ethan Wheeler with Microsoft Paint
+heart.png - created by Ethan Wheeler with Microsoft Paint

@@ -186,9 +186,9 @@ namespace SurviveTheWoods.Screens
 
             spriteBatch.DrawString(titleFont, _menuTitle, titlePosition, titleColor,
                 0, titleOrigin, titleScale, SpriteEffects.None, 0);
-            spriteBatch.DrawString(titleFont, "          Instructions:\nPress space to kill monsters", 
-                new Vector2(300, 310), titleColor, 0, titleOrigin,
-                0.3f, SpriteEffects.None, 0);
+            spriteBatch.DrawString(menuFont, "            Instructions:\nPress space to kill monsters", 
+                new Vector2(475, 360), titleColor, 0, titleOrigin,
+                1.0f, SpriteEffects.None, 0);
 
             spriteBatch.End();
         }
