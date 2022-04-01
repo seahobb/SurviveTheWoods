@@ -20,6 +20,7 @@ namespace SurviveTheWoods.Screens
         private SpriteFont _gameFont;
         private EndFog _endFog;
         private BaseChip _baseChip;
+        private Water _water;
         private Tree[] _trees;
         private AutumnTree[] _autumnTrees;
         private Log[] _logs;
@@ -44,6 +45,8 @@ namespace SurviveTheWoods.Screens
         private int[] ghostHealth = new int[4];
 
         BloodParticleSystem _blood;
+
+        Tilemap _tilemap;
 
         //private Game _game;
 
@@ -73,6 +76,7 @@ namespace SurviveTheWoods.Screens
 
             _blood = new BloodParticleSystem(passgame, 20);
             passgame.Components.Add(_blood);
+
         }
 
         // Load graphics content for the game
@@ -83,9 +87,11 @@ namespace SurviveTheWoods.Screens
 
             _gameFont = _content.Load<SpriteFont>("Arial");
 
+            _tilemap = ScreenManager.Tilemap;
 
             _endFog = ScreenManager.EndFog;
             _baseChip = ScreenManager.BaseChip;
+            _water = ScreenManager.Water;
             _trees = ScreenManager.Trees;
             _autumnTrees = ScreenManager.AutumnTrees;
             _logs = ScreenManager.Logs;
@@ -371,7 +377,9 @@ namespace SurviveTheWoods.Screens
 
             spriteBatch.Begin(transformMatrix: transform);
 
-            _baseChip.Draw(gameTime, spriteBatch);
+           // _baseChip.Draw(gameTime, spriteBatch);
+            _tilemap.Draw(gameTime, spriteBatch);
+            
             foreach (var log in _logs) log.Draw(gameTime, spriteBatch);
             _hero.Draw(gameTime, spriteBatch);
 
@@ -394,6 +402,8 @@ namespace SurviveTheWoods.Screens
             foreach (var tree in _trees) tree.Draw(gameTime, spriteBatch);
 
             foreach (var tree in _autumnTrees) tree.Draw(gameTime, spriteBatch);
+
+            _water.Draw(gameTime, spriteBatch);
             //_endFog.Draw(gameTime, spriteBatch);
 
             //spriteBatch.DrawString(_gameFont, "// TODO", _playerPosition, Color.Green);

@@ -27,6 +27,10 @@ namespace SurviveTheWoods.StateManagement
 
       //  private OceanParticleSystem oceans;
 
+        public Water Water { get; set; }
+
+        public Tilemap Tilemap { get; set; }
+
         /// <summary>
         /// Sound played when player is hurt
         /// </summary>
@@ -168,8 +172,10 @@ namespace SurviveTheWoods.StateManagement
             TitleFont = _content.Load<SpriteFont>("nightFont"); 
             MenuFont = _content.Load<SpriteFont>("Arial");
 
+            Tilemap = new Tilemap("map.txt");
             EndFog = new EndFog();
             BaseChip = new BaseChip();
+            Water = new Water();
             Hero = new Hero();
             System.Random r = new System.Random();
             Ghost1 = new Ghost(ref r);
@@ -216,7 +222,9 @@ namespace SurviveTheWoods.StateManagement
             //////////////////////////////////////
 
             //EndFog.Texture = _content.Load<Texture2D>("fog1");
+            Tilemap.LoadContent(_content);
             BaseChip.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            Water.Texture = _content.Load<Texture2D>("[A]Water4_pipo");
             foreach (var log in Logs) log.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             Hero.Texture = _content.Load<Texture2D>("Male 01-2");
             Ghost1.Texture = _content.Load<Texture2D>("Enemy 15-1");
