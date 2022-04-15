@@ -44,6 +44,8 @@ namespace SurviveTheWoods.Screens
         private int[] skeletonHealth = new int[4];
         private int[] ghostHealth = new int[4];
 
+        private HeartHealth heartHealth;
+
         BloodParticleSystem _blood;
 
         Tilemap _tilemap;
@@ -120,6 +122,8 @@ namespace SurviveTheWoods.Screens
                 skeletonHealth[i] = 3;
                 ghostHealth[i] = 3;
             }
+
+            heartHealth = ScreenManager.HeartHealth;
 
             /* _heart1 = ScreenManager.Heart1;
              _heart2 = ScreenManager.Heart2;
@@ -216,6 +220,8 @@ namespace SurviveTheWoods.Screens
 
             _hero.Color = Color.White;
             _hero.Update(gameTime);
+
+            heartHealth.Update(gameTime);
 
             directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -427,18 +433,22 @@ namespace SurviveTheWoods.Screens
             ghostArr[3].Draw(gameTime, spriteBatch);
             spriteBatch.End();
 
-            spriteBatch.Begin();
-            var origin = new Vector2(199, 99);
-            var font = ScreenManager.MenuFont;
-            var color = Color.SeaShell * TransitionAlpha;
+            /* spriteBatch.Begin();
+             var origin = new Vector2(199, 99);
+             var font = ScreenManager.MenuFont;
+             var color = Color.SeaShell * TransitionAlpha;
 
-            int health = 10 - hurtCount;
-            string s = "          Health: " + health;
-            spriteBatch.DrawString(font, s,
-                new Vector2(580, 630), color, 0, origin,
-                2.0f, SpriteEffects.None, 0);
+             int health = 10 - hurtCount;
+             string s = "          Health: " + health;
+             spriteBatch.DrawString(font, s,
+                 new Vector2(580, 630), color, 0, origin,
+                 2.0f, SpriteEffects.None, 0);
 
-            spriteBatch.End();
+             spriteBatch.End();*/
+
+            heartHealth.Draw();
+
+
 
 
 

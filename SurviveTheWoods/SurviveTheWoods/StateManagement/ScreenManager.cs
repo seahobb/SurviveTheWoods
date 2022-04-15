@@ -116,6 +116,11 @@ namespace SurviveTheWoods.StateManagement
         /// </summary>
         public Skeleton Skeleton4 { get; private set; }
 
+        /// <summary>
+        /// Represents the health of main character 3-d
+        /// </summary>
+        public HeartHealth HeartHealth { get; private set; }
+
        /* public Heart Heart1 { get; private set; }
         public Heart Heart2 { get; private set; }
         public Heart Heart3 { get; private set; }
@@ -138,7 +143,7 @@ namespace SurviveTheWoods.StateManagement
         /// </summary>
         public Log[] Logs { get; private set; }
 
-       // Game game;
+        Game game;
 
 
         /// <summary>
@@ -148,7 +153,8 @@ namespace SurviveTheWoods.StateManagement
         public ScreenManager(Game game) : base(game)
         {
             _content = new ContentManager(game.Services, "Content");
-           // this.game = game; //see if this works///////////////////////////////////////////////
+            // this.game = game; //see if this works///////////////////////////////////////////////
+            this.game = game;
         }
 
         /// <summary>
@@ -186,6 +192,8 @@ namespace SurviveTheWoods.StateManagement
             Skeleton2 = new Skeleton(ref r);
             Skeleton3 = new Skeleton(ref r);
             Skeleton4 = new Skeleton(ref r);
+
+            HeartHealth = new HeartHealth(game);
             /*Heart1 = new Heart(Hero.Position);
             Heart2 = new Heart(Hero.Position);
             Heart3 = new Heart(Hero.Position);
