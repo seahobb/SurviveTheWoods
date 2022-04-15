@@ -52,6 +52,8 @@ namespace SurviveTheWoods
         /// </summary>
         public Texture2D Texture { get; set; }
 
+        public bool firstTry { get; set; } = true;
+
         /// <summary>
         /// Loads the hero sprite
         /// </summary>
@@ -67,9 +69,16 @@ namespace SurviveTheWoods
         /// <param name="gameTime">the game time</param>
         public void Update(GameTime gameTime)
         {
-            keyboardState = Keyboard.GetState();
 
-            if (InjuredSprite)
+
+            keyboardState = Keyboard.GetState();
+            if (DeadSprite)
+            {
+                position = new Vector2(640, 640);
+                firstTry = false;
+                DeadSprite = false;
+            }
+            else if (InjuredSprite)
             {
                 if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
                 {
@@ -122,6 +131,8 @@ namespace SurviveTheWoods
                 }
             }
 
+
+            
             
 
             bounds.X = position.X - 16;
@@ -168,7 +179,7 @@ namespace SurviveTheWoods
             else if (!InjuredSprite)
                 spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
             else if (DeadSprite)
-                spriteBatch.Draw(Texture, position, source, Color.Black, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
+                spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
         }
     }
 }

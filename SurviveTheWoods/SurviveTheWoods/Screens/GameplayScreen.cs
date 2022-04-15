@@ -33,6 +33,7 @@ namespace SurviveTheWoods.Screens
         private Skeleton _skeleton2;
         private Skeleton _skeleton3;
         private Skeleton _skeleton4;
+
        /* private Heart _heart1;
         private Heart _heart2;
         private Heart _heart3;
@@ -44,7 +45,16 @@ namespace SurviveTheWoods.Screens
         private int[] skeletonHealth = new int[4];
         private int[] ghostHealth = new int[4];
 
-        private HeartHealth heartHealth;
+        private HeartHealth heartHealth1;
+        private HeartHealth heartHealth2;
+        private HeartHealth heartHealth3;
+        private HeartHealth heartHealth4;
+        private HeartHealth heartHealth5;
+        private HeartHealth heartHealth6;
+        private HeartHealth heartHealth7;
+        private HeartHealth heartHealth8;
+        private HeartHealth heartHealth9;
+        private HeartHealth heartHealth10;
 
         BloodParticleSystem _blood;
 
@@ -123,7 +133,16 @@ namespace SurviveTheWoods.Screens
                 ghostHealth[i] = 3;
             }
 
-            heartHealth = ScreenManager.HeartHealth;
+            heartHealth1 = ScreenManager.HeartHealth1;
+            heartHealth2 = ScreenManager.HeartHealth2;
+            heartHealth3 = ScreenManager.HeartHealth3;
+            heartHealth4 = ScreenManager.HeartHealth4;
+            heartHealth5 = ScreenManager.HeartHealth5;
+            heartHealth6 = ScreenManager.HeartHealth6;
+            heartHealth7 = ScreenManager.HeartHealth7;
+            heartHealth8 = ScreenManager.HeartHealth8;
+            heartHealth9 = ScreenManager.HeartHealth9;
+            heartHealth10 = ScreenManager.HeartHealth10;
 
             /* _heart1 = ScreenManager.Heart1;
              _heart2 = ScreenManager.Heart2;
@@ -219,9 +238,19 @@ namespace SurviveTheWoods.Screens
             _heart5.Update(gameTime);*/
 
             _hero.Color = Color.White;
+           
             _hero.Update(gameTime);
 
-            heartHealth.Update(gameTime);
+            heartHealth1.Update(gameTime);
+            heartHealth2.Update(gameTime);
+            heartHealth3.Update(gameTime);
+            heartHealth4.Update(gameTime);
+            heartHealth5.Update(gameTime);
+            heartHealth6.Update(gameTime);
+            heartHealth7.Update(gameTime);
+            heartHealth8.Update(gameTime);
+            heartHealth9.Update(gameTime);
+            heartHealth10.Update(gameTime);
 
             directionTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -245,7 +274,7 @@ namespace SurviveTheWoods.Screens
                         if (hurtCount >= 10)
                         {
                             _blood.PlaceBlood(new Vector2(380, 250));
-                            //_hero.DeadSprite = true;
+                            _hero.DeadSprite = true;
                             _hero.InjuredSprite = false;
                             hurtCount = 0;
                         }
@@ -446,9 +475,76 @@ namespace SurviveTheWoods.Screens
 
              spriteBatch.End();*/
 
-            heartHealth.Draw();
+            int health = 10 - hurtCount;
 
+            /*spriteBatch.Begin();
+            var origin = new Vector2(199, 99);
+            var font = ScreenManager.MenuFont;
+            var color = Color.SeaShell * TransitionAlpha;
 
+            if (health == 10 && !_hero.firstTry)
+            {
+                string s = "          Restarting... ";
+                spriteBatch.DrawString(font, s, new Vector2(580, 630), color, 0, origin, 2.0f, SpriteEffects.None, 0);
+              
+
+                //TimeSpan ts = TimeSpan.FromSeconds(2);
+               // if (ts == gameTime.ElapsedGameTime)
+               // {
+               //     s = "";
+              //      spriteBatch.DrawString(font, s, new Vector2(580, 630), color, 0, origin, 2.0f, SpriteEffects.None, 0);
+               // }
+            }
+            else
+            {
+                string s = "";
+                spriteBatch.DrawString(font, s, new Vector2(580, 630), color, 0, origin, 2.0f, SpriteEffects.None, 0);
+            }
+            spriteBatch.End();*/
+
+            switch (health)
+            {
+                case 10:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw(); heartHealth5.Draw();
+                    heartHealth6.Draw(); heartHealth7.Draw(); heartHealth8.Draw(); heartHealth9.Draw(); heartHealth10.Draw();
+                    break;
+                case 9:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw(); heartHealth5.Draw();
+                    heartHealth6.Draw(); heartHealth7.Draw(); heartHealth8.Draw(); heartHealth9.Draw();
+                    break;
+                case 8:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw(); heartHealth5.Draw();
+                    heartHealth6.Draw(); heartHealth7.Draw(); heartHealth8.Draw();
+                    break;
+                case 7:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw(); heartHealth5.Draw();
+                    heartHealth6.Draw(); heartHealth7.Draw();
+                    break;
+                case 6:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw(); heartHealth5.Draw();
+                    heartHealth6.Draw();
+                    break;
+                case 5:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw(); heartHealth5.Draw();
+                    break;
+                case 4:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw();
+                    break;
+                case 3:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw();
+                    break;
+                case 2:
+                    heartHealth1.Draw(); heartHealth2.Draw();
+                    break;
+                case 1:
+                    heartHealth1.Draw();
+                    break;
+                case 0:
+                    heartHealth1.Draw(); heartHealth2.Draw(); heartHealth3.Draw(); heartHealth4.Draw(); heartHealth5.Draw();
+                    heartHealth6.Draw(); heartHealth7.Draw(); heartHealth8.Draw(); heartHealth9.Draw(); heartHealth10.Draw();
+                    break;
+            }
+           
 
 
 

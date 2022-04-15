@@ -119,7 +119,16 @@ namespace SurviveTheWoods.StateManagement
         /// <summary>
         /// Represents the health of main character 3-d
         /// </summary>
-        public HeartHealth HeartHealth { get; private set; }
+        public HeartHealth HeartHealth1 { get; private set; }
+        public HeartHealth HeartHealth2 { get; private set; }
+        public HeartHealth HeartHealth3 { get; private set; }
+        public HeartHealth HeartHealth4 { get; private set; }
+        public HeartHealth HeartHealth5 { get; private set; }
+        public HeartHealth HeartHealth6 { get; private set; }
+        public HeartHealth HeartHealth7 { get; private set; }
+        public HeartHealth HeartHealth8 { get; private set; }
+        public HeartHealth HeartHealth9 { get; private set; }
+        public HeartHealth HeartHealth10 { get; private set; }
 
        /* public Heart Heart1 { get; private set; }
         public Heart Heart2 { get; private set; }
@@ -193,7 +202,16 @@ namespace SurviveTheWoods.StateManagement
             Skeleton3 = new Skeleton(ref r);
             Skeleton4 = new Skeleton(ref r);
 
-            HeartHealth = new HeartHealth(game);
+            HeartHealth1 = new HeartHealth(game, 1);
+            HeartHealth2 = new HeartHealth(game, 2);
+            HeartHealth3 = new HeartHealth(game, 3);
+            HeartHealth4 = new HeartHealth(game, 4);
+            HeartHealth5 = new HeartHealth(game, 5);
+            HeartHealth6 = new HeartHealth(game, 6);
+            HeartHealth7 = new HeartHealth(game, 7);
+            HeartHealth8 = new HeartHealth(game, 8);
+            HeartHealth9 = new HeartHealth(game, 9);
+            HeartHealth10 = new HeartHealth(game, 10);
             /*Heart1 = new Heart(Hero.Position);
             Heart2 = new Heart(Hero.Position);
             Heart3 = new Heart(Hero.Position);

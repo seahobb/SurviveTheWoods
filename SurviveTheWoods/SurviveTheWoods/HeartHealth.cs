@@ -37,54 +37,83 @@ namespace SurviveTheWoods
             vertices[0].Color = Color.Red;
             // vertex 1
             vertices[1].Position = new Vector3(-1.25f, 2, 0);
-            vertices[1].Color = Color.Blue;
+            vertices[1].Color = Color.Pink;
             // vertex 2
             vertices[2].Position = new Vector3(0, 2.3f, 0);
-            vertices[2].Color = Color.Purple;
+            vertices[2].Color = Color.DarkRed;
 
             // vertex 3
             vertices[3].Position = new Vector3(0, 0, 0);
             vertices[3].Color = Color.Red;
             // vertex 4
             vertices[4].Position = new Vector3(1.25f, 2, 0);
-            vertices[4].Color = Color.Orange;
+            vertices[4].Color = Color.IndianRed;
             // vertex 5
             vertices[5].Position = new Vector3(0, 2.3f, 0);
-            vertices[5].Color = Color.Purple;
+            vertices[5].Color = Color.DarkRed;
 
             // vertex 6
             vertices[6].Position = new Vector3(-1.25f, 2, 0);
-            vertices[6].Color = Color.Blue;
+            vertices[6].Color = Color.Pink;
             // vertex 7
             vertices[7].Position = new Vector3(-0.6f, 3, 0);
-            vertices[7].Color = Color.Green;
+            vertices[7].Color = Color.OrangeRed;
             // vertex 8
             vertices[8].Position = new Vector3(0, 2.3f, 0);
-            vertices[8].Color = Color.Purple;
+            vertices[8].Color = Color.DarkRed;
 
             // vertex 9
             vertices[9].Position = new Vector3(0.6f, 3, 0);
-            vertices[9].Color = Color.Black;
+            vertices[9].Color = Color.Red;
             // vertex 10
             vertices[10].Position = new Vector3(1.25f, 2, 0);
-            vertices[10].Color = Color.Orange;
+            vertices[10].Color = Color.IndianRed;
             // vertex 11
             vertices[11].Position = new Vector3(0, 2.3f, 0);
-            vertices[11].Color = Color.Purple;
+            vertices[11].Color = Color.DarkRed;
         }
 
         /// <summary>
         /// Initializes the BasicEffect to render our heart
         /// </summary>
-        void InitializeEffect()
+        void InitializeEffect(int whichHeart)
         {
             effect = new BasicEffect(game.GraphicsDevice);
             effect.World = Matrix.Identity;
-            effect.View = Matrix.CreateLookAt(
-                new Vector3(0, 0, 40), // The camera position
-                new Vector3(0, 15, 0), // The camera target,
-                Vector3.Up            // The camera up vector
-            );
+            switch(whichHeart)
+            {
+                case 1:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, 0, 40), new Vector3(23, 19, 0), Vector3.Up);
+                    break;
+                case 2:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -0.25f, 40), new Vector3(21, 19, -0.5f), Vector3.Up);
+                    break;
+                case 3:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -0.5f, 40), new Vector3(19, 19, -1), Vector3.Up);
+                    break;
+                case 4:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -0.75f, 40), new Vector3(17, 19, -1.5f), Vector3.Up);
+                    break;
+                case 5:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -1, 40), new Vector3(15, 19, -2), Vector3.Up);
+                    break;
+                case 6:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -1.25f, 40), new Vector3(13, 19, -2.5f), Vector3.Up);
+                    break;
+                case 7:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -1.5f, 40), new Vector3(11, 19, -3), Vector3.Up);
+                    break;
+                case 8:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -1.75f, 40), new Vector3(9, 19, -3.5f), Vector3.Up);
+                    break;
+                case 9:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -2, 40), new Vector3(7, 19, -4), Vector3.Up);
+                    break;
+                case 10:
+                    effect.View = Matrix.CreateLookAt(new Vector3(0, -2.25f, 40), new Vector3(5, 19, -4.5f), Vector3.Up);
+                    break;
+            }
+            
             effect.Projection = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4,                         // The field-of-view 
                 game.GraphicsDevice.Viewport.AspectRatio,   // The aspect ratio
@@ -98,11 +127,11 @@ namespace SurviveTheWoods
         /// Constructs a triangle instance
         /// </summary>
         /// <param name="game">The game that is creating the triangle</param>
-        public HeartHealth(Game game)
+        public HeartHealth(Game game, int whichHeart)
         {
             this.game = game;
             InitializeVertices();
-            InitializeEffect();
+            InitializeEffect(whichHeart);
         }
 
         /// <summary>
