@@ -130,11 +130,51 @@ namespace SurviveTheWoods.StateManagement
         public HeartHealth HeartHealth9 { get; private set; }
         public HeartHealth HeartHealth10 { get; private set; }
 
-       /* public Heart Heart1 { get; private set; }
-        public Heart Heart2 { get; private set; }
-        public Heart Heart3 { get; private set; }
-        public Heart Heart4 { get; private set; }
-        public Heart Heart5 { get; private set; }*/
+        /* public Heart Heart1 { get; private set; }
+         public Heart Heart2 { get; private set; }
+         public Heart Heart3 { get; private set; }
+         public Heart Heart4 { get; private set; }
+         public Heart Heart5 { get; private set; }*/
+
+        /// <summary>
+        /// Array of the front walls
+        /// </summary>
+        public FrontWall[] FrontWalls { get; private set; }
+
+        /// <summary>
+        /// Array of the side walls left
+        /// </summary>
+        public SideWall[] SideWallsLeft { get; private set; }
+
+        /// <summary>
+        /// Array of the side walls right
+        /// </summary>
+        public SideWall[] SideWallsRight { get; private set; }
+
+        /// <summary>
+        /// Array of the side walls bottom
+        /// </summary>
+        public SideWallRotate[] SideWallsBottom { get; private set; }
+
+        /// <summary>
+        /// Array of the side walls top
+        /// </summary>
+        public SideWallRotate[] SideWallsTop { get; private set; }
+
+        /// <summary>
+        /// Array of the front doors
+        /// </summary>
+        public FrontDoor[] FrontDoors { get; private set; }
+
+        /// <summary>
+        /// Array of the keys to unlock house
+        /// </summary>
+        public Key[] Keys { get; private set; }
+
+        /// <summary>
+        /// Array of the keys that are left
+        /// </summary>
+        public int KeysLeft { get; private set; }
 
         /// <summary>
         /// Array of the tree sprite
@@ -217,10 +257,76 @@ namespace SurviveTheWoods.StateManagement
             Heart3 = new Heart(Hero.Position);
             Heart4 = new Heart(Hero.Position);
             Heart5 = new Heart(Hero.Position);*/
-            
+
+            SideWallsLeft = new SideWall[8];
+            int space1 = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                SideWallsLeft[i] = new SideWall(new Vector2(500, -40 - space1));
+                space1 += 40;
+            }
+
+            SideWallsRight = new SideWall[8];
+            int space2 = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                SideWallsRight[i] = new SideWall(new Vector2(847, -40 - space2));
+                space2 += 40;
+            }
+
+            SideWallsBottom = new SideWallRotate[8];
+            int space3 = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 3) space3 -= 9;//32
+                SideWallsBottom[i] = new SideWallRotate(new Vector2(514 + space3, -46));
+                space3 += 40;
+            }
+            space3 += 32;
+            for (int i = 4; i < 8; i++)
+            {
+                if (i == 7) space3 -= 9;//32
+                SideWallsBottom[i] = new SideWallRotate(new Vector2(514 + space3, -46));
+                space3 += 40;
+            }
+
+            SideWallsTop = new SideWallRotate[9];
+            int space4 = 0;
+            for (int i = 0; i < 9; i++)
+            {
+                if (i == 8) space4 -= 27;//17
+                SideWallsTop[i] = new SideWallRotate(new Vector2(514 + space4, -320));
+                space4 += 40;
+            }
+
+            FrontWalls = new FrontWall[8];
+            int space = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                FrontWalls[i] = new FrontWall(new Vector2(500 + space, -35));
+                if (i == 3) space += 45;//135
+                else space += 45;
+            }
+
+            FrontDoors = new FrontDoor[2];
+            int space5 = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                if (i==1)
+                    FrontDoors[i] = new FrontDoor(new Vector2(665 + space5, -35), true);
+                else
+                    FrontDoors[i] = new FrontDoor(new Vector2(665 + space5, -35), false);
+                space5 += 15;//105
+            }
 
             System.Random rand = new System.Random();
 
+            Keys = new Key[4];
+            for (int i = 0; i < 4; i++)
+            {
+                Keys[i] = new Key(new Vector2((float)rand.NextDouble() * 1280, (float)rand.NextDouble() * 1280));
+            }
+            KeysLeft = Keys.Length;
 
             Trees = new Tree[100];
             for (int i = 0; i < 100; i++)
@@ -268,6 +374,13 @@ namespace SurviveTheWoods.StateManagement
             Heart5.Texture = _content.Load<Texture2D>("heart");*/
 
             //Hero.LoadContent(_content); - works too now
+            foreach (var wall in FrontWalls) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            foreach (var wall in SideWallsLeft) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            foreach (var wall in SideWallsRight) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            foreach (var wall in SideWallsBottom) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            foreach (var wall in SideWallsTop) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            foreach (var door in FrontDoors) door.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            foreach (var key in Keys) key.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in Trees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in AutumnTrees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             HurtSound = _content.Load<SoundEffect>("Hit_Hurt56");

@@ -11,7 +11,9 @@ namespace SurviveTheWoods
         private short animationFrame;
 
         // private BoundingRectangle bounds = new BoundingRectangle(new Vector2(200 - 16, 300 - 16), 32, 32);
-        private BoundingRectangle bounds;
+        private BoundingRectangle boundsRect;
+
+        private BoundingCircle bounds;
 
         private Direction Direction = Direction.Down;
 
@@ -30,14 +32,24 @@ namespace SurviveTheWoods
         {
             x = r.Next(200, 1128);
             y = r.Next(200, 1128);
-            bounds = new BoundingRectangle(new Vector2(x - 16, y - 16), 32, 32);
+            boundsRect = new BoundingRectangle(new Vector2(x - 16, y - 16), 32, 32);
+            bounds = new BoundingCircle(new Vector2(x, y), 16);
             position = new Vector2(x, y);
         }
 
         /// <summary>
-        /// Bounds of the skeleton
+        /// Bounds of the sprite
         /// </summary>
-        public BoundingRectangle Bounds
+        public BoundingRectangle BoundsRect
+        {
+            get => boundsRect;
+            set => boundsRect = value;
+        }
+
+        /// <summary>
+        /// bounds of the sprite
+        /// </summary>
+        public BoundingCircle Bounds
         {
             get => bounds;
             set => bounds = value;
@@ -112,8 +124,9 @@ namespace SurviveTheWoods
                         break;
                 }
 
-                bounds.X = position.X - 16;
-                bounds.Y = position.Y - 16;
+                boundsRect.X = position.X - 16;
+                boundsRect.Y = position.Y - 16;
+                bounds.Center = position;
             }
             
         }

@@ -33,12 +33,20 @@ namespace SurviveTheWoods.Screens
         private Skeleton _skeleton2;
         private Skeleton _skeleton3;
         private Skeleton _skeleton4;
+        private FrontWall[] _frontWalls;
+        private SideWall[] _sideWallsLeft;
+        private SideWall[] _sideWallsRight;
+        private SideWallRotate[] _sideWallsTop;
+        private SideWallRotate[] _sideWallsBottom;
+        private FrontDoor[] _frontDoors;
+        private Key[] _keys;
+        private int _keysLeft;
 
-       /* private Heart _heart1;
-        private Heart _heart2;
-        private Heart _heart3;
-        private Heart _heart4;
-        private Heart _heart5;*/
+        /* private Heart _heart1;
+         private Heart _heart2;
+         private Heart _heart3;
+         private Heart _heart4;
+         private Heart _heart5;*/
 
         private Ghost[] ghostArr = new Ghost[4];
         private Skeleton[] skeletonArr = new Skeleton[4];
@@ -116,6 +124,14 @@ namespace SurviveTheWoods.Screens
             _skeleton2 = ScreenManager.Skeleton2;
             _skeleton3 = ScreenManager.Skeleton3;
             _skeleton4 = ScreenManager.Skeleton4;
+            _frontWalls = ScreenManager.FrontWalls;
+            _sideWallsLeft = ScreenManager.SideWallsLeft;
+            _sideWallsRight = ScreenManager.SideWallsRight;
+            _sideWallsBottom = ScreenManager.SideWallsBottom;
+            _sideWallsTop = ScreenManager.SideWallsTop;
+            _frontDoors = ScreenManager.FrontDoors;
+            _keys = ScreenManager.Keys;
+            _keysLeft = ScreenManager.KeysLeft;
 
             ghostArr[0] = _ghost1;
             ghostArr[1] = _ghost2;
@@ -150,11 +166,11 @@ namespace SurviveTheWoods.Screens
              _heart4 = ScreenManager.Heart4;
              _heart5 = ScreenManager.Heart5;*/
 
-           /* health[0] = (_heart1);
-            health[1] = (_heart2);
-            health[2] = (_heart3);
-            health[3] = (_heart4);
-            health[4] = (_heart5);*/
+            /* health[0] = (_heart1);
+             health[1] = (_heart2);
+             health[2] = (_heart3);
+             health[3] = (_heart4);
+             health[4] = (_heart5);*/
 
 
             //oceans = new OceanParticleSystem(ScreenManager.Game, 20);
@@ -187,7 +203,7 @@ namespace SurviveTheWoods.Screens
 
         private Heart[] health = new Heart[5];
         private KeyboardState keyboardState;
-        
+
 
         // This method checks the GameScreen.IsActive property, so the game will
         // stop updating when the pause menu is active, or if you tab away to a different application.
@@ -211,7 +227,7 @@ namespace SurviveTheWoods.Screens
             //then try to subtract amount that matrix transform does
 
 
-            
+
 
             base.Update(gameTime, otherScreenHasFocus, false);
 
@@ -231,14 +247,14 @@ namespace SurviveTheWoods.Screens
             skeletonArr[2].Update(gameTime);
             skeletonArr[3].Update(gameTime);
 
-           /* _heart1.Update(gameTime);
-            _heart2.Update(gameTime);
-            _heart3.Update(gameTime);
-            _heart4.Update(gameTime);
-            _heart5.Update(gameTime);*/
+            /* _heart1.Update(gameTime);
+             _heart2.Update(gameTime);
+             _heart3.Update(gameTime);
+             _heart4.Update(gameTime);
+             _heart5.Update(gameTime);*/
 
             _hero.Color = Color.White;
-           
+
             _hero.Update(gameTime);
 
             heartHealth1.Update(gameTime);
@@ -256,7 +272,7 @@ namespace SurviveTheWoods.Screens
 
             for (int i = 0; i < 4; i++)
             {
-                
+
                 if ((ghostArr[i].Bounds.CollidesWith(_hero.Bounds) && !ghostArr[i].Dead) ||
                         (skeletonArr[i].Bounds.CollidesWith(_hero.Bounds) && !skeletonArr[i].Dead))
                 {
@@ -320,11 +336,55 @@ namespace SurviveTheWoods.Screens
                         }
                     }
                 }
-                    
-                
+
+
+            }
+
+            if (_keysLeft == 0)
+            {
+                _hero.PreventSpriteLeft = false;
+                _hero.PreventSpriteRight = false;
+                _hero.PreventSpriteUp = false;
+                _hero.PreventSpriteBottom = false;
+
+                if (_hero.Position.Y <= 45)
+                {
+
+                }
+            }
+            else
+            {
+                Collisions.BoundingRectangle brTop = new Collisions.BoundingRectangle(new Vector2(0, 45), 1290, 1); //vector2 pos, width, height
+                Collisions.BoundingRectangle brBottom = new Collisions.BoundingRectangle(new Vector2(0, 1290), 1290, 1);
+                Collisions.BoundingRectangle brLeft = new Collisions.BoundingRectangle(new Vector2(0, 45), 1, 1290);
+                Collisions.BoundingRectangle brRight = new Collisions.BoundingRectangle(new Vector2(1280, 45), 1, 1290);
+
+                if (brTop.CollidesWith(_hero.BoundsRect)) _hero.PreventSpriteUp = true;
+                else _hero.PreventSpriteUp = false;
+
+                if (brBottom.CollidesWith(_hero.BoundsRect)) _hero.PreventSpriteBottom = true;
+                else _hero.PreventSpriteBottom = false;
+
+                if (brLeft.CollidesWith(_hero.BoundsRect)) _hero.PreventSpriteLeft = true;
+                else _hero.PreventSpriteLeft = false;
+
+                if (brRight.CollidesWith(_hero.BoundsRect)) _hero.PreventSpriteRight = true;
+                else _hero.PreventSpriteRight = false;
             }
 
             
+
+            
+            foreach (var key in _keys)
+            {
+                if (!key.StopDraw && key.Bounds.CollidesWith(_hero.Bounds))
+                {
+                    key.StopDraw = true;
+                    _keysLeft--;
+                }
+            }
+
+
                 if (IsActive)
             {
                 // Apply some random jitter to make the enemy move around.
@@ -412,11 +472,11 @@ namespace SurviveTheWoods.Screens
 
             spriteBatch.Begin(transformMatrix: transform);
 
-           // _baseChip.Draw(gameTime, spriteBatch);
+            // _baseChip.Draw(gameTime, spriteBatch);
             _tilemap.Draw(gameTime, spriteBatch);
             
             foreach (var log in _logs) log.Draw(gameTime, spriteBatch);
-            _hero.Draw(gameTime, spriteBatch);
+            _hero.Draw(gameTime, spriteBatch, _gameFont, _keysLeft);
 
             /*ghostArr[0].Draw(gameTime, spriteBatch);
             ghostArr[1].Draw(gameTime, spriteBatch);
@@ -434,11 +494,28 @@ namespace SurviveTheWoods.Screens
             _heart4.Draw(gameTime, spriteBatch, 4);
             _heart5.Draw(gameTime, spriteBatch, 5);*/
 
+            foreach (var wall in _sideWallsLeft) wall.Draw(gameTime, spriteBatch);
+
+            foreach (var wall in _sideWallsRight) wall.Draw(gameTime, spriteBatch);
+
+            foreach (var wall in _sideWallsBottom) wall.Draw(gameTime, spriteBatch);
+
+            foreach (var wall in _sideWallsTop) wall.Draw(gameTime, spriteBatch);
+
+            foreach (var wall in _frontWalls) wall.Draw(gameTime, spriteBatch);
+
+            foreach (var door in _frontDoors) door.Draw(gameTime, spriteBatch);
+
+            foreach (var key in _keys) key.Draw(gameTime, spriteBatch);
+
             foreach (var tree in _trees) tree.Draw(gameTime, spriteBatch);
 
             foreach (var tree in _autumnTrees) tree.Draw(gameTime, spriteBatch);
 
             _water.Draw(gameTime, spriteBatch);
+
+            
+
             //_endFog.Draw(gameTime, spriteBatch);
 
             //spriteBatch.DrawString(_gameFont, "// TODO", _playerPosition, Color.Green);
@@ -446,6 +523,15 @@ namespace SurviveTheWoods.Screens
             //                      _enemyPosition, Color.DarkRed);
 
             spriteBatch.End();
+
+            /*float offsetX_txt = 435 - _hero.Position.X;
+            float offsetY_txt = 280 - _hero.Position.Y;
+
+            Matrix transform_txt = Matrix.CreateTranslation(offsetX_txt, offsetY_txt, 0);
+
+            spriteBatch.Begin(transformMatrix: transform_txt);
+            spriteBatch.DrawString(_gameFont, $"Keys left: {_keysLeft}", new Vector2(2, 2), Color.White);
+            spriteBatch.End();*/
 
             //BlendState bs = new BlendState();
             //bs.AlphaSourceBlend = Blend.SourceAlpha;
