@@ -126,30 +126,30 @@ namespace SurviveTheWoods
             else if (!InjuredSprite && !DeadSprite)
             {
                 if ((keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W)) && !PreventSpriteUp)
-                {//change back to 75
-                    position += new Vector2(0, -1) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    text_pos += new Vector2(0, -1) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                {//600 speed
+                    position += new Vector2(0, -1) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    text_pos += new Vector2(0, -1) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     Direction = Direction.Up;
                 }
 
                 else if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S) && !PreventSpriteBottom)
                 {
-                    position += new Vector2(0, 1) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    text_pos += new Vector2(0, 1) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    position += new Vector2(0, 1) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    text_pos += new Vector2(0, 1) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     Direction = Direction.Down;
                 }
 
                 else if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A) && !PreventSpriteLeft)
                 {
-                    position += new Vector2(-1, 0) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    text_pos += new Vector2(-1, 0) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    position += new Vector2(-1, 0) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    text_pos += new Vector2(-1, 0) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     Direction = Direction.Left;
                 }
 
                 else if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D) && !PreventSpriteRight)
                 {
-                    position += new Vector2(1, 0) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    text_pos += new Vector2(1, 0) * 600 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    position += new Vector2(1, 0) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    text_pos += new Vector2(1, 0) * 100 * (float)gameTime.ElapsedGameTime.TotalSeconds;
                     Direction = Direction.Right;
                 }
             }
@@ -168,7 +168,7 @@ namespace SurviveTheWoods
         /// </summary>
         /// <param name="gameTime">the game time</param>
         /// <param name="spriteBatch">the sprite batch to draw with</param>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Graphics.SpriteFont gameFont, int keysLeft)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Graphics.SpriteFont gameFont, int keysLeft, bool gameOver)
         {
             // Update animation timer
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -205,7 +205,21 @@ namespace SurviveTheWoods
             else if (DeadSprite)
                 spriteBatch.Draw(Texture, position, source, Color, 0, new Vector2(64, 64), 1.0f, SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(gameFont, $"Keys left: {keysLeft}", text_pos, Color.White);
+            if (gameOver)
+            {
+
+                //text_pos: 300, -240
+                //text_pos.X -= 1;
+                text_pos.X = 520;
+                text_pos.Y = -150;
+                
+                string s = "You survived! Press 'enter' to exit";
+
+                spriteBatch.DrawString(gameFont, s, text_pos, Color.White);
+
+                if (keyboardState.IsKeyDown(Keys.Enter)) System.Windows.Forms.Application.Exit();
+            }
+            else spriteBatch.DrawString(gameFont, $"Keys left: {keysLeft}", text_pos, Color.White);
         }
     }
 }

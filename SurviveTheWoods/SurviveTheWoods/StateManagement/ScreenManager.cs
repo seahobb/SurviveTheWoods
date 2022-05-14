@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using SurviveTheWoods.Screens;
 
 namespace SurviveTheWoods.StateManagement
 {
@@ -70,6 +71,16 @@ namespace SurviveTheWoods.StateManagement
         /// Base chip with all sprites
         /// </summary>
         public BaseChip BaseChip { get; private set; }
+
+        /// <summary>
+        /// Bed for sprite
+        /// </summary>
+        public Bed Bed { get; private set; }
+
+        /// <summary>
+        /// Food table for sprite
+        /// </summary>
+        public FoodTable FoodTable { get; private set; }
 
         /// <summary>
         /// Represents the hero sprite
@@ -167,6 +178,12 @@ namespace SurviveTheWoods.StateManagement
         public FrontDoor[] FrontDoors { get; private set; }
 
         /// <summary>
+        /// Array of the wood floor
+        /// </summary>
+        public WoodFloor WoodFloor { get; private set; }
+
+
+        /// <summary>
         /// Array of the keys to unlock house
         /// </summary>
         public Key[] Keys { get; private set; }
@@ -214,9 +231,12 @@ namespace SurviveTheWoods.StateManagement
             base.Initialize();
             _isInitialized = true;
 
+            
             //oceans = new OceanParticleSystem(game, 20);
             //game.Components.Add(oceans);
         }
+
+       
 
         /// <summary>
         /// Loads content for the ScreenManager and its screens
@@ -230,6 +250,9 @@ namespace SurviveTheWoods.StateManagement
             Tilemap = new Tilemap("map.txt");
             EndFog = new EndFog();
             BaseChip = new BaseChip();
+            Bed = new Bed();
+            FoodTable = new FoodTable();
+            WoodFloor = new WoodFloor();
             Water = new Water();
             Hero = new Hero();
             System.Random r = new System.Random();
@@ -274,7 +297,7 @@ namespace SurviveTheWoods.StateManagement
                 space2 += 40;
             }
 
-            SideWallsBottom = new SideWallRotate[8];
+            SideWallsBottom = new SideWallRotate[9];
             int space3 = 0;
             for (int i = 0; i < 4; i++)
             {
@@ -289,6 +312,7 @@ namespace SurviveTheWoods.StateManagement
                 SideWallsBottom[i] = new SideWallRotate(new Vector2(514 + space3, -46));
                 space3 += 40;
             }
+            SideWallsBottom[8] = new SideWallRotate(new Vector2(514 + space3 -190, -46));
 
             SideWallsTop = new SideWallRotate[9];
             int space4 = 0;
@@ -318,6 +342,12 @@ namespace SurviveTheWoods.StateManagement
                     FrontDoors[i] = new FrontDoor(new Vector2(665 + space5, -35), false);
                 space5 += 15;//105
             }
+
+            
+
+          
+
+            
 
             System.Random rand = new System.Random();
 
@@ -356,6 +386,9 @@ namespace SurviveTheWoods.StateManagement
             //EndFog.Texture = _content.Load<Texture2D>("fog1");
             Tilemap.LoadContent(_content);
             BaseChip.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            Bed.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            FoodTable.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+            WoodFloor.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             Water.Texture = _content.Load<Texture2D>("[A]Water4_pipo");
             foreach (var log in Logs) log.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             Hero.Texture = _content.Load<Texture2D>("Male 01-2");
@@ -380,6 +413,7 @@ namespace SurviveTheWoods.StateManagement
             foreach (var wall in SideWallsBottom) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var wall in SideWallsTop) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var door in FrontDoors) door.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+
             foreach (var key in Keys) key.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in Trees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
             foreach (var tree in AutumnTrees) tree.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");

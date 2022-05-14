@@ -20,6 +20,8 @@ namespace SurviveTheWoods.Screens
         private SpriteFont _gameFont;
         private EndFog _endFog;
         private BaseChip _baseChip;
+        private Bed _bed;
+        private FoodTable _foodTable;
         private Water _water;
         private Tree[] _trees;
         private AutumnTree[] _autumnTrees;
@@ -34,6 +36,7 @@ namespace SurviveTheWoods.Screens
         private Skeleton _skeleton3;
         private Skeleton _skeleton4;
         private FrontWall[] _frontWalls;
+        private WoodFloor _woodFloor;
         private SideWall[] _sideWallsLeft;
         private SideWall[] _sideWallsRight;
         private SideWallRotate[] _sideWallsTop;
@@ -41,6 +44,7 @@ namespace SurviveTheWoods.Screens
         private FrontDoor[] _frontDoors;
         private Key[] _keys;
         private int _keysLeft;
+        private bool _gameOver = false;
 
         /* private Heart _heart1;
          private Heart _heart2;
@@ -111,6 +115,8 @@ namespace SurviveTheWoods.Screens
 
             _endFog = ScreenManager.EndFog;
             _baseChip = ScreenManager.BaseChip;
+            _bed = ScreenManager.Bed;
+            _foodTable = ScreenManager.FoodTable;
             _water = ScreenManager.Water;
             _trees = ScreenManager.Trees;
             _autumnTrees = ScreenManager.AutumnTrees;
@@ -125,6 +131,7 @@ namespace SurviveTheWoods.Screens
             _skeleton3 = ScreenManager.Skeleton3;
             _skeleton4 = ScreenManager.Skeleton4;
             _frontWalls = ScreenManager.FrontWalls;
+            _woodFloor = ScreenManager.WoodFloor;
             _sideWallsLeft = ScreenManager.SideWallsLeft;
             _sideWallsRight = ScreenManager.SideWallsRight;
             _sideWallsBottom = ScreenManager.SideWallsBottom;
@@ -339,17 +346,59 @@ namespace SurviveTheWoods.Screens
 
 
             }
-
+            //_keysLeft = 0;
             if (_keysLeft == 0)
             {
+                //let sprite into house
                 _hero.PreventSpriteLeft = false;
                 _hero.PreventSpriteRight = false;
                 _hero.PreventSpriteUp = false;
                 _hero.PreventSpriteBottom = false;
 
+                //open front doors
+                int space5 = 0;
+                for (int i = 0; i < 2; i++)
+                {
+                    if (i == 1)
+                        _frontDoors[i] = new FrontDoor(new Vector2(620 + space5, -35), true);
+                    else
+                        _frontDoors[i] = new FrontDoor(new Vector2(620 + space5, -35), false);
+                    space5 += 105;//15
+                }
+                foreach (var door in _frontDoors) door.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+
+                //remove middle two front walls
+                int space = 0;
+                for (int i = 0; i < 6; i++)
+                {
+                    _frontWalls[i] = new FrontWall(new Vector2(500 + space, -35));
+                    if (i == 2) space += 135;//45
+                    else space += 45;
+                }
+                foreach (var frontWall in _frontWalls) frontWall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+
+                //merge bottom side wall
+                int space3 = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (i == 3) space3 -= 9;//32
+                    _sideWallsBottom[i] = new SideWallRotate(new Vector2(514 + space3, -46));
+                    space3 += 40;
+                }
+                space3 += 0;//32
+                for (int i = 4; i < 9; i++)
+                {
+                    if (i == 7) space3 -= 9;//32
+                    _sideWallsBottom[i] = new SideWallRotate(new Vector2(514 + space3, -46));
+                    space3 += 40;
+                }
+                foreach (var wall in _sideWallsBottom) wall.Texture = _content.Load<Texture2D>("[Base]BaseChip_pipo16");
+
+
+                //if hero enters house
                 if (_hero.Position.Y <= 45)
                 {
-
+                    _gameOver = true;
                 }
             }
             else
@@ -473,10 +522,14 @@ namespace SurviveTheWoods.Screens
             spriteBatch.Begin(transformMatrix: transform);
 
             // _baseChip.Draw(gameTime, spriteBatch);
-            _tilemap.Draw(gameTime, spriteBatch);
             
+            _tilemap.Draw(gameTime, spriteBatch);
+            _woodFloor.Draw(gameTime, spriteBatch);
+            _bed.Draw(gameTime, spriteBatch);
+            _foodTable.Draw(gameTime, spriteBatch);
+
             foreach (var log in _logs) log.Draw(gameTime, spriteBatch);
-            _hero.Draw(gameTime, spriteBatch, _gameFont, _keysLeft);
+            _hero.Draw(gameTime, spriteBatch, _gameFont, _keysLeft, _gameOver);
 
             /*ghostArr[0].Draw(gameTime, spriteBatch);
             ghostArr[1].Draw(gameTime, spriteBatch);
@@ -504,7 +557,9 @@ namespace SurviveTheWoods.Screens
 
             foreach (var wall in _frontWalls) wall.Draw(gameTime, spriteBatch);
 
-            foreach (var door in _frontDoors) door.Draw(gameTime, spriteBatch);
+            foreach (var door in _frontDoors) door.Draw(gameTime, spriteBatch, _keysLeft);
+
+           // foreach (var floor in _woodFloor) floor.Draw(gameTime, spriteBatch);
 
             foreach (var key in _keys) key.Draw(gameTime, spriteBatch);
 

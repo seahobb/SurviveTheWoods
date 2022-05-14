@@ -14,6 +14,8 @@ namespace SurviveTheWoods
 
         private bool invert;
 
+       // public bool GameOver { get; set; } = false;
+
         /// <summary>
         /// Front door position
         /// </summary>
@@ -38,12 +40,24 @@ namespace SurviveTheWoods
         /// </summary>
         /// <param name="gameTime">current game time</param>
         /// <param name="spriteBatch">the sprite batch to render with</param>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, int keysLeft)
         {
-            if (invert)
-                spriteBatch.Draw(Texture, position, new Rectangle(113, 867, 12, 24), Color.White, 0, new Vector2(0, 0), 1.4f, SpriteEffects.None, 0);
+
+            if (keysLeft == 0)
+            {
+                if (invert)
+                    spriteBatch.Draw(Texture, position, new Rectangle(113, 867, 12, 24), Color.White, 0, new Vector2(0, 0), 1.4f, SpriteEffects.FlipHorizontally, 0);
+                else
+                    spriteBatch.Draw(Texture, position, new Rectangle(113, 867, 12, 24), Color.White, 0, new Vector2(0, 0), 1.4f, SpriteEffects.None, 0);
+            }
             else
-                spriteBatch.Draw(Texture, position, new Rectangle(113, 867, 12, 24), Color.White, 0, new Vector2(0, 0), 1.4f, SpriteEffects.FlipHorizontally, 0);
+            {
+                if (invert)
+                    spriteBatch.Draw(Texture, position, new Rectangle(113, 867, 12, 24), Color.White, 0, new Vector2(0, 0), 1.4f, SpriteEffects.None, 0);
+                else
+                    spriteBatch.Draw(Texture, position, new Rectangle(113, 867, 12, 24), Color.White, 0, new Vector2(0, 0), 1.4f, SpriteEffects.FlipHorizontally, 0);
+            }
+            
         }
     }
 }
